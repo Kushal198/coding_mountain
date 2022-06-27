@@ -1,13 +1,26 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { CryptoTable } from '../components/CryptoDataTable';
 import {data} from '../components/data';
 import { Container, Tooltip, Box } from '@mui/material';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
+import axios from 'axios';
 
 
 const HomePage = () => {
+ 
+  const [state, setState] = useState();
+ 
+  useEffect(() => {
+    const fetchData = async()=> {
+      const result = await axios('https://jsonplaceholder.typicode.com/todos/');
+      console.log(result);
+    }
+    fetchData();
+
+  },[])
+
     const cols = React.useMemo(() => [
       {
         Header: '',
