@@ -39,6 +39,13 @@ export default class ScrapData {
                     .find('img')
                     .attr('src');
 
+                  const rank = $(
+                    'div>span.profile__rank',
+                    $(childrenElem).html()
+                  )
+                    .text()
+                    .trim();
+
                   const name = $(
                     'div>span.profile__name>a.profile__link',
                     $(childrenElem).html()
@@ -57,6 +64,7 @@ export default class ScrapData {
                     image,
                     code,
                     name,
+                    rank: parseInt(rank),
                   };
                 }
                 if (keyIdx === 1) {
@@ -72,12 +80,9 @@ export default class ScrapData {
           coinArray.push(coinObj);
         }
       });
-      console.log(coinArray);
       return coinArray;
     } catch (err) {
       console.log(err);
     }
   }
 }
-
-console.log(new ScrapData().getPriceFeed());

@@ -10,12 +10,16 @@ import axios from 'axios';
 
 const HomePage = () => {
  
-  const [state, setState] = useState();
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
  
   useEffect(() => {
     const fetchData = async()=> {
-      const result = await axios('https://jsonplaceholder.typicode.com/todos/');
-      console.log(result);
+      setIsLoading(true);
+      const {data} = await axios('/api/price-feed');
+      console.log(data);
+      setData(data.result);
+      setIsLoading(false);
     }
     fetchData();
 
@@ -40,10 +44,17 @@ const HomePage = () => {
             cellClass: '',
             Cell: (props) => 
             <Box sx={{display: 'flex', alignItems: 'center'}}>
-            <img style={{width: '30px'}} src='https://cdn.coinranking.com/bOabBYkcX/bitcoin_btc.svg?size=68x68' alt='coins img'/>
+              
+           
+            
+            <Box sx={{mr:4}}>
+            <div className="coinRank">{props.row.original.rank}</div>
+            </Box>
+            <img style={{width: '30px'}} src={props.row.original.image}/>
             <Box sx={{ml: 2}}>
-            <div className='coinName'>{props.row.original.coins}</div>
-            <div className='coinSymbol'>{props.row.original.symbol}</div>
+          
+            <div className='coinName'>{props.row.original.name}</div>
+            <div className='coinSymbol'>{props.row.original.code}</div>
             </Box>
             </Box>,
           },
@@ -51,24 +62,24 @@ const HomePage = () => {
             Header: 'Price',
             accessor: 'price',
             cellClass: 'cellStyling',
-            Cell: (props) => <>${props.value}</>,
+            Cell: (props) => <>{props.value}</>,
           },
           {
             Header: 'Market Cap',
             accessor: 'marketCap',
             cellClass: 'cellStyling',
-            Cell: (props) => <>${props.value}</>,
+            Cell: (props) => <>{props.value}</>,
           },
           {
             Header: '24H',
-            accessor: '24H',
+            accessor: 'h24',
             cellClass: 'cellStyling',
             Cell: (props) => <>{props.value}</>,
           },
       ],[]);
     return(
         <Container fixed>
-            <CryptoTable columns={cols} data={data}/>
+            <CryptoTable columns={cols} data={data} isLoading={isLoading}/>
         </Container>
     )
 }

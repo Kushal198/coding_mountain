@@ -1,6 +1,9 @@
 import http from 'http';
 import express, { Express } from 'express';
 import morgan from 'morgan';
+import routes from './routes/api';
+import job from './cronjob/schedule';
+const cors = require('cors');
 
 const router: Express = express();
 
@@ -12,6 +15,8 @@ router.use(express.urlencoded({ extended: false }));
 
 /** Takes care of JSON data */
 router.use(express.json());
+
+router.use(cors());
 
 /** Middlewares */
 router.use((req, res, next) => {
@@ -31,6 +36,7 @@ router.use((req, res, next) => {
 });
 
 /** Routes */
+router.use('/api', routes);
 
 /** Error handling */
 router.use((req, res, next) => {
@@ -45,4 +51,5 @@ const httpServer = http.createServer(router);
 const PORT: any = process.env.PORT ?? 5050;
 httpServer.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}`);
+  job.coinRefresh();
 });

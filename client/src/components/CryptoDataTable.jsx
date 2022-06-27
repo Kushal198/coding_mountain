@@ -15,7 +15,8 @@ import {
 export function CryptoTable({
   columns,
   data,
-  defaultPageSize = 10,
+  isLoading,
+  defaultPageSize = 50,
   searchKeyword,
 }){
   const {
@@ -35,7 +36,14 @@ export function CryptoTable({
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: defaultPageSize },
+      initialState: { pageIndex: 0, 
+        sortBy: [
+        {
+            id: 'rank',
+            asc: false
+        }
+    ], 
+    pageSize: defaultPageSize },
     },
     useFilters,
     useSortBy,
@@ -46,7 +54,11 @@ export function CryptoTable({
   // }, [searchKeyword]);
   // rendering the UI of table
   return (
-    <TableContainer component={Paper}>
+    <>
+    {isLoading ? (
+      <p>Loading...</p>
+    ):(
+      <TableContainer component={Paper}>
       <br />
       <Table
         {...getTableProps()}
@@ -115,5 +127,8 @@ export function CryptoTable({
         paginationMaxSize={pageCount}
       /> */}
     </TableContainer>
+    )
+  }
+  </>
   );
 }

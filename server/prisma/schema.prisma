@@ -17,6 +17,8 @@ model Coin{
 
   code String @unique
 
+  rank Int
+
   image String
 
   price String
