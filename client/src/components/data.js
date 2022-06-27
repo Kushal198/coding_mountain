@@ -1,0 +1,701 @@
+export const data = [{
+  "id": 1,
+  "coins": "Boliviano",
+  "symbol": "BOB",
+  "price": 53599.52,
+  "marketCap": 75974748.66,
+  "24H": 30.66
+}, {
+  "id": 2,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 43918.02,
+  "marketCap": 88167541.16,
+  "24H": 0.61
+}, {
+  "id": 3,
+  "coins": "Shekel",
+  "symbol": "ILS",
+  "price": 92408.34,
+  "marketCap": 57786878.77,
+  "24H": 59.0
+}, {
+  "id": 4,
+  "coins": "Koruna",
+  "symbol": "CZK",
+  "price": 11885.82,
+  "marketCap": 45945922.08,
+  "24H": 53.01
+}, {
+  "id": 5,
+  "coins": "Yen",
+  "symbol": "JPY",
+  "price": 39281.03,
+  "marketCap": 55071128.94,
+  "24H": 72.17
+}, {
+  "id": 6,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 92433.19,
+  "marketCap": 55227623.65,
+  "24H": 96.72
+}, {
+  "id": 7,
+  "coins": "Dollar",
+  "symbol": "CAD",
+  "price": 81239.94,
+  "marketCap": 73044586.28,
+  "24H": 61.08
+}, {
+  "id": 8,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 31966.72,
+  "marketCap": 74131571.0,
+  "24H": 85.75
+}, {
+  "id": 9,
+  "coins": "Franc",
+  "symbol": "XPF",
+  "price": 37137.5,
+  "marketCap": 45092812.84,
+  "24H": 93.83
+}, {
+  "id": 10,
+  "coins": "Rupee",
+  "symbol": "PKR",
+  "price": 72562.61,
+  "marketCap": 15518583.59,
+  "24H": 11.78
+}, {
+  "id": 11,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 4068.49,
+  "marketCap": 80757525.8,
+  "24H": 33.5
+}, {
+  "id": 12,
+  "coins": "Krona",
+  "symbol": "SEK",
+  "price": 94592.99,
+  "marketCap": 21312489.9,
+  "24H": 43.57
+}, {
+  "id": 13,
+  "coins": "Peso",
+  "symbol": "COP",
+  "price": 57015.34,
+  "marketCap": 37823781.05,
+  "24H": 7.76
+}, {
+  "id": 14,
+  "coins": "Tenge",
+  "symbol": "KZT",
+  "price": 47741.01,
+  "marketCap": 13060492.16,
+  "24H": 44.52
+}, {
+  "id": 15,
+  "coins": "Kuna",
+  "symbol": "HRK",
+  "price": 99054.1,
+  "marketCap": 89439874.91,
+  "24H": 86.88
+}, {
+  "id": 16,
+  "coins": "Lev",
+  "symbol": "BGN",
+  "price": 11725.47,
+  "marketCap": 70931789.61,
+  "24H": 47.3
+}, {
+  "id": 17,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 86001.51,
+  "marketCap": 62632656.99,
+  "24H": 42.62
+}, {
+  "id": 18,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 37361.97,
+  "marketCap": 41382603.95,
+  "24H": 28.81
+}, {
+  "id": 19,
+  "coins": "Krona",
+  "symbol": "SEK",
+  "price": 44711.64,
+  "marketCap": 9951522.0,
+  "24H": 49.13
+}, {
+  "id": 20,
+  "coins": "Shekel",
+  "symbol": "ILS",
+  "price": 8716.73,
+  "marketCap": 53929060.04,
+  "24H": 14.55
+}, {
+  "id": 21,
+  "coins": "Dollar",
+  "symbol": "USD",
+  "price": 26318.35,
+  "marketCap": 76999993.46,
+  "24H": 91.7
+}, {
+  "id": 22,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 47050.87,
+  "marketCap": 72936572.55,
+  "24H": 27.44
+}, {
+  "id": 23,
+  "coins": "Peso",
+  "symbol": "PHP",
+  "price": 95111.25,
+  "marketCap": 97748641.89,
+  "24H": 82.44
+}, {
+  "id": 24,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 38424.06,
+  "marketCap": 26737938.57,
+  "24H": 99.1
+}, {
+  "id": 25,
+  "coins": "Rupiah",
+  "symbol": "IDR",
+  "price": 99215.69,
+  "marketCap": 89852074.5,
+  "24H": 84.56
+}, {
+  "id": 26,
+  "coins": "Real",
+  "symbol": "BRL",
+  "price": 40825.28,
+  "marketCap": 53436289.19,
+  "24H": 37.71
+}, {
+  "id": 27,
+  "coins": "Real",
+  "symbol": "BRL",
+  "price": 74604.54,
+  "marketCap": 90081440.86,
+  "24H": 32.02
+}, {
+  "id": 28,
+  "coins": "Peso",
+  "symbol": "CUP",
+  "price": 83238.45,
+  "marketCap": 74880516.47,
+  "24H": 96.5
+}, {
+  "id": 29,
+  "coins": "Pound",
+  "symbol": "EGP",
+  "price": 67335.52,
+  "marketCap": 31945064.11,
+  "24H": 59.96
+}, {
+  "id": 30,
+  "coins": "Dollar",
+  "symbol": "AUD",
+  "price": 23425.83,
+  "marketCap": 5597284.39,
+  "24H": 49.56
+}, {
+  "id": 31,
+  "coins": "Rupiah",
+  "symbol": "IDR",
+  "price": 88569.02,
+  "marketCap": 83555866.06,
+  "24H": 59.71
+}, {
+  "id": 32,
+  "coins": "Ruble",
+  "symbol": "RUB",
+  "price": 72301.51,
+  "marketCap": 71943681.33,
+  "24H": 42.26
+}, {
+  "id": 33,
+  "coins": "Peso",
+  "symbol": "COP",
+  "price": 81781.98,
+  "marketCap": 51810531.09,
+  "24H": 68.87
+}, {
+  "id": 34,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 45203.82,
+  "marketCap": 20771903.97,
+  "24H": 74.37
+}, {
+  "id": 35,
+  "coins": "Yen",
+  "symbol": "JPY",
+  "price": 98887.81,
+  "marketCap": 59886582.43,
+  "24H": 70.34
+}, {
+  "id": 36,
+  "coins": "Lempira",
+  "symbol": "HNL",
+  "price": 53681.57,
+  "marketCap": 51977943.36,
+  "24H": 48.12
+}, {
+  "id": 37,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 58425.97,
+  "marketCap": 85673291.67,
+  "24H": 97.43
+}, {
+  "id": 38,
+  "coins": "Dollar",
+  "symbol": "USD",
+  "price": 65105.83,
+  "marketCap": 32640482.68,
+  "24H": 97.68
+}, {
+  "id": 39,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 59026.77,
+  "marketCap": 25206854.54,
+  "24H": 2.92
+}, {
+  "id": 40,
+  "coins": "Ruble",
+  "symbol": "RUB",
+  "price": 31233.12,
+  "marketCap": 15948173.48,
+  "24H": 77.4
+}, {
+  "id": 41,
+  "coins": "Rupiah",
+  "symbol": "IDR",
+  "price": 41941.24,
+  "marketCap": 92647023.1,
+  "24H": 42.18
+}, {
+  "id": 42,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 82037.05,
+  "marketCap": 16614108.85,
+  "24H": 18.55
+}, {
+  "id": 43,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 50331.9,
+  "marketCap": 16545005.22,
+  "24H": 42.37
+}, {
+  "id": 44,
+  "coins": "Lek",
+  "symbol": "ALL",
+  "price": 61511.35,
+  "marketCap": 45690816.19,
+  "24H": 35.31
+}, {
+  "id": 45,
+  "coins": "Peso",
+  "symbol": "PHP",
+  "price": 86264.21,
+  "marketCap": 8398702.0,
+  "24H": 69.19
+}, {
+  "id": 46,
+  "coins": "Krona",
+  "symbol": "SEK",
+  "price": 91102.38,
+  "marketCap": 61180209.73,
+  "24H": 72.76
+}, {
+  "id": 47,
+  "coins": "Naira",
+  "symbol": "NGN",
+  "price": 61336.13,
+  "marketCap": 47163637.05,
+  "24H": 43.74
+}, {
+  "id": 48,
+  "coins": "Dollar",
+  "symbol": "USD",
+  "price": 69945.67,
+  "marketCap": 33568395.01,
+  "24H": 18.8
+}, {
+  "id": 49,
+  "coins": "Dollar",
+  "symbol": "NZD",
+  "price": 19578.82,
+  "marketCap": 65040993.02,
+  "24H": 81.07
+}, {
+  "id": 50,
+  "coins": "Real",
+  "symbol": "BRL",
+  "price": 22123.02,
+  "marketCap": 17675457.7,
+  "24H": 5.68
+}, {
+  "id": 51,
+  "coins": "Dollar",
+  "symbol": "USD",
+  "price": 73858.26,
+  "marketCap": 89150009.16,
+  "24H": 43.29
+}, {
+  "id": 52,
+  "coins": "Peso",
+  "symbol": "COP",
+  "price": 66699.93,
+  "marketCap": 41289925.49,
+  "24H": 40.95
+}, {
+  "id": 53,
+  "coins": "Rupiah",
+  "symbol": "IDR",
+  "price": 39855.98,
+  "marketCap": 564376.45,
+  "24H": 99.72
+}, {
+  "id": 54,
+  "coins": "Yen",
+  "symbol": "JPY",
+  "price": 64633.28,
+  "marketCap": 84817337.06,
+  "24H": 81.2
+}, {
+  "id": 55,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 62864.29,
+  "marketCap": 4886030.0,
+  "24H": 36.71
+}, {
+  "id": 56,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 97981.37,
+  "marketCap": 51610857.45,
+  "24H": 5.86
+}, {
+  "id": 57,
+  "coins": "Peso",
+  "symbol": "PHP",
+  "price": 59178.32,
+  "marketCap": 8177497.0,
+  "24H": 94.01
+}, {
+  "id": 58,
+  "coins": "Ruble",
+  "symbol": "RUB",
+  "price": 35836.5,
+  "marketCap": 59387109.53,
+  "24H": 89.36
+}, {
+  "id": 59,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 97786.54,
+  "marketCap": 47708104.06,
+  "24H": 66.59
+}, {
+  "id": 60,
+  "coins": "Peso",
+  "symbol": "PHP",
+  "price": 44743.61,
+  "marketCap": 78520671.39,
+  "24H": 11.41
+}, {
+  "id": 61,
+  "coins": "Dong",
+  "symbol": "VND",
+  "price": 14930.29,
+  "marketCap": 66453709.19,
+  "24H": 28.53
+}, {
+  "id": 62,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 34816.29,
+  "marketCap": 69666452.78,
+  "24H": 80.64
+}, {
+  "id": 63,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 97703.66,
+  "marketCap": 28005290.29,
+  "24H": 1.03
+}, {
+  "id": 64,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 74847.15,
+  "marketCap": 61633736.37,
+  "24H": 41.98
+}, {
+  "id": 65,
+  "coins": "Peso",
+  "symbol": "CUP",
+  "price": 99380.87,
+  "marketCap": 60356740.97,
+  "24H": 87.83
+}, {
+  "id": 66,
+  "coins": "Rupiah",
+  "symbol": "IDR",
+  "price": 9692.84,
+  "marketCap": 44900482.57,
+  "24H": 99.09
+}, {
+  "id": 67,
+  "coins": "Dollar",
+  "symbol": "CAD",
+  "price": 73743.62,
+  "marketCap": 40711114.31,
+  "24H": 52.03
+}, {
+  "id": 68,
+  "coins": "Zloty",
+  "symbol": "PLN",
+  "price": 72744.46,
+  "marketCap": 71680697.26,
+  "24H": 78.54
+}, {
+  "id": 69,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 26389.68,
+  "marketCap": 12755920.54,
+  "24H": 70.56
+}, {
+  "id": 70,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 1779.49,
+  "marketCap": 11375558.95,
+  "24H": 89.36
+}, {
+  "id": 71,
+  "coins": "Rupiah",
+  "symbol": "IDR",
+  "price": 46308.65,
+  "marketCap": 13856204.86,
+  "24H": 78.45
+}, {
+  "id": 72,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 8470.11,
+  "marketCap": 21966737.05,
+  "24H": 40.66
+}, {
+  "id": 73,
+  "coins": "Baht",
+  "symbol": "THB",
+  "price": 2069.1,
+  "marketCap": 6032671.0,
+  "24H": 95.33
+}, {
+  "id": 74,
+  "coins": "Manat",
+  "symbol": "TMT",
+  "price": 75208.44,
+  "marketCap": 26351699.32,
+  "24H": 68.53
+}, {
+  "id": 75,
+  "coins": "Peso",
+  "symbol": "PHP",
+  "price": 72890.75,
+  "marketCap": 79848040.7,
+  "24H": 29.45
+}, {
+  "id": 76,
+  "coins": "Yen",
+  "symbol": "JPY",
+  "price": 92218.57,
+  "marketCap": 55452502.13,
+  "24H": 33.17
+}, {
+  "id": 77,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 93170.88,
+  "marketCap": 52645277.8,
+  "24H": 5.4
+}, {
+  "id": 78,
+  "coins": "Naira",
+  "symbol": "NGN",
+  "price": 32966.15,
+  "marketCap": 9579289.0,
+  "24H": 33.6
+}, {
+  "id": 79,
+  "coins": "Som",
+  "symbol": "UZS",
+  "price": 50059.0,
+  "marketCap": 39013809.29,
+  "24H": 4.51
+}, {
+  "id": 80,
+  "coins": "Dong",
+  "symbol": "VND",
+  "price": 90032.67,
+  "marketCap": 66538788.89,
+  "24H": 31.04
+}, {
+  "id": 81,
+  "coins": "Peso",
+  "symbol": "PHP",
+  "price": 31335.78,
+  "marketCap": 34227363.41,
+  "24H": 73.58
+}, {
+  "id": 82,
+  "coins": "Shilling",
+  "symbol": "UGX",
+  "price": 60455.6,
+  "marketCap": 71884381.96,
+  "24H": 64.91
+}, {
+  "id": 83,
+  "coins": "Manat",
+  "symbol": "TMT",
+  "price": 92497.52,
+  "marketCap": 70911287.61,
+  "24H": 79.53
+}, {
+  "id": 84,
+  "coins": "Tenge",
+  "symbol": "KZT",
+  "price": 84357.4,
+  "marketCap": 6677173.0,
+  "24H": 9.39
+}, {
+  "id": 85,
+  "coins": "Peso",
+  "symbol": "MXN",
+  "price": 73480.7,
+  "marketCap": 61802990.59,
+  "24H": 52.75
+}, {
+  "id": 86,
+  "coins": "Real",
+  "symbol": "BRL",
+  "price": 76448.73,
+  "marketCap": 51333800.98,
+  "24H": 20.22
+}, {
+  "id": 87,
+  "coins": "Zloty",
+  "symbol": "PLN",
+  "price": 68455.84,
+  "marketCap": 98569814.12,
+  "24H": 42.51
+}, {
+  "id": 88,
+  "coins": "Peso",
+  "symbol": "COP",
+  "price": 9406.88,
+  "marketCap": 15078556.76,
+  "24H": 33.48
+}, {
+  "id": 89,
+  "coins": "Ngultrum",
+  "symbol": "BTN",
+  "price": 20696.9,
+  "marketCap": 53612190.63,
+  "24H": 76.93
+}, {
+  "id": 90,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 44338.64,
+  "marketCap": 81641492.19,
+  "24H": 70.4
+}, {
+  "id": 91,
+  "coins": "Peso",
+  "symbol": "PHP",
+  "price": 60017.18,
+  "marketCap": 66960375.54,
+  "24H": 32.71
+}, {
+  "id": 92,
+  "coins": "Rupiah",
+  "symbol": "IDR",
+  "price": 99501.55,
+  "marketCap": 10453553.85,
+  "24H": 1.13
+}, {
+  "id": 93,
+  "coins": "Ruble",
+  "symbol": "RUB",
+  "price": 92729.32,
+  "marketCap": 5958605.0,
+  "24H": 17.86
+}, {
+  "id": 94,
+  "coins": "Ruble",
+  "symbol": "RUB",
+  "price": 64432.21,
+  "marketCap": 85581876.03,
+  "24H": 81.1
+}, {
+  "id": 95,
+  "coins": "Euro",
+  "symbol": "EUR",
+  "price": 87800.5,
+  "marketCap": 46224607.64,
+  "24H": 63.27
+}, {
+  "id": 96,
+  "coins": "Sol",
+  "symbol": "PEN",
+  "price": 21351.7,
+  "marketCap": 48076117.06,
+  "24H": 31.73
+}, {
+  "id": 97,
+  "coins": "Dirham",
+  "symbol": "MAD",
+  "price": 58086.56,
+  "marketCap": 23999281.03,
+  "24H": 59.47
+}, {
+  "id": 98,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 71919.26,
+  "marketCap": 93763919.02,
+  "24H": 4.51
+}, {
+  "id": 99,
+  "coins": "Real",
+  "symbol": "BRL",
+  "price": 51698.11,
+  "marketCap": 23626395.76,
+  "24H": 86.91
+}, {
+  "id": 100,
+  "coins": "Yuan Renminbi",
+  "symbol": "CNY",
+  "price": 22957.08,
+  "marketCap": 50340706.71,
+  "24H": 99.78
+}];
