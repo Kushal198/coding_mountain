@@ -15,9 +15,8 @@ import {
 export function CryptoTable({
   columns,
   data,
-  isLoading,
   defaultPageSize = 50,
-  searchKeyword,
+  // searchKeyword,
 }){
   const {
     getTableProps,
@@ -50,15 +49,14 @@ export function CryptoTable({
     usePagination
   );
   // React.useEffect(() => {
-  //   setFilter('brandName', searchKeyword); // Update the show.name filter. Now our table will filter and show only the rows which have a matching value
+  //   // setFilter('price', searchKeyword); // Update the show.name filter. Now our table will filter and show only the rows which have a matching value
   // }, [searchKeyword]);
+
   // rendering the UI of table
   return (
     <>
-    {isLoading ? (
-      <p>Loading...</p>
-    ):(
-      <TableContainer component={Paper}>
+   
+      <TableContainer component={Paper} sx={{my: 4}}>
       <br />
       <Table
         {...getTableProps()}
@@ -128,7 +126,6 @@ export function CryptoTable({
       /> */}
     </TableContainer>
     )
-  }
   </>
   );
 }

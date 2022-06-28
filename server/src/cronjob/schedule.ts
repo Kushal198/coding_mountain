@@ -20,27 +20,37 @@ class Job {
         let marketCap: string = item.marketCap;
         let h24: string = item['24h'];
 
-        if (code !== '') {
-          await prisma.coin.upsert({
+        if (code != '') {
+          const findCoin = await prisma.coin.findUnique({
             where: {
               code,
             },
-            update: {
-              price,
-              marketCap,
-              rank,
-              h24,
-            },
-            create: {
-              name,
-              code,
-              rank,
-              image,
-              price,
-              marketCap,
-              h24,
-            },
           });
+          if (findCoin) {
+            await prisma.coin.update({
+              where: {
+                code,
+              },
+              data: {
+                price,
+                marketCap,
+                h24,
+                rank,
+              },
+            });
+          } else {
+            await prisma.coin.create({
+              data: {
+                name,
+                image,
+                h24,
+                price,
+                rank,
+                code,
+                marketCap,
+              },
+            });
+          }
         }
       }
     });

@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import routes from './routes/api';
 import job from './cronjob/schedule';
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const router: Express = express();
 
@@ -12,6 +13,9 @@ router.use(morgan('dev'));
 
 /** Parse the request */
 router.use(express.urlencoded({ extended: false }));
+
+/** Cookie parser middleware */
+router.use(cookieParser());
 
 /** Takes care of JSON data */
 router.use(express.json());
