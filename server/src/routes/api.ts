@@ -5,5 +5,6 @@ const router = express.Router();
 router.get('/price-feed', controller.getPriceFeed);
 router.get('/watch-list', controller.getWatchList);
 router.put('/favorite-coins', controller.updateWatchList);
+router.delete('/watch-list', controller.removeWatchList);
 
 export = router;

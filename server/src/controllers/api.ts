@@ -69,16 +69,6 @@ const updateWatchList = async (
   }
 
   return res.status(200).json(resultArr);
-
-  // update the post
-  // let response: AxiosResponse = await axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-  //     ...(title && { title }),
-  //     ...(body && { body })
-  // });
-  // return response
-  // return res.status(200).json({
-  //     message: response.data
-  // });
 };
 
 const getWatchList = async (
@@ -109,4 +99,48 @@ const getWatchList = async (
   return res.status(200).json({ results: resultArr });
 };
 
-export default { getPriceFeed, updateWatchList, getWatchList };
+const removeWatchList = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const favArray =
+    req.cookies['favorites'] && JSON.parse(req.cookies['favorites']);
+
+  const id = req.body.id;
+
+  const coin = await prisma.coin.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  let newArray;
+  if (coin) {
+    console.log(coin.code);
+    newArray = favArray.filter((item: any) => {
+      return item.code !== coin.code;
+    });
+    let favorites: any = JSON.stringify(newArray);
+
+    res.cookie('favorites', favorites, {
+      maxAge: 540 * 60 * 60 * 1000,
+    });
+  }
+
+  let resultArr = [];
+  if (newArray) {
+    for (let item of favArray) {
+      let i = await prisma.coin.findUnique({
+        where: {
+          code: item.code,
+        },
+      });
+      resultArr.push(i);
+    }
+  }
+
+  return res.status(200).json({ results: resultArr });
+};
+
+export default { getPriceFeed, updateWatchList, getWatchList, removeWatchList };
