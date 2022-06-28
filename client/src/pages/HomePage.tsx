@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState, useCallback } from 'react';
 import { CryptoTable } from '../components/CryptoDataTable';
 
@@ -31,9 +30,20 @@ const style = {
   p: 4,
 };
 
+export type Payload = {
+  id: number;
+  name: string;
+  code: string;
+  rank: string;
+  image: string;
+  price: string;
+  marketCap: string;
+  h24: string;
+};
+
 const HomePage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Payload[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFavLoading, setIsFavLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -45,7 +55,7 @@ const HomePage = () => {
 
   const handleOpen = async (
     event: React.ChangeEvent<HTMLInputElement>,
-    id: any
+    id: number
   ) => {
     if (selected.includes(id)) {
       setOpen(false);
@@ -55,7 +65,6 @@ const HomePage = () => {
           id,
         },
       });
-      console.log(fav);
     } else {
       setCode(event.target.name);
       setOpen(true);
@@ -238,19 +247,19 @@ const HomePage = () => {
         Header: 'Price',
         accessor: 'price',
         cellClass: 'cellStyling',
-        Cell: (props) => <>{props.value}</>,
+        Cell: (props: any) => <>{props.value}</>,
       },
       {
         Header: 'Market Cap',
         accessor: 'marketCap',
         cellClass: 'cellStyling',
-        Cell: (props) => <>{props.value}</>,
+        Cell: (props: any) => <>{props.value}</>,
       },
       {
         Header: '24H',
         accessor: 'h24',
         cellClass: 'cellStyling',
-        Cell: (props) => <>{props.value}</>,
+        Cell: (props: any) => <>{props.value}</>,
       },
     ],
     [handleChange]
@@ -258,6 +267,23 @@ const HomePage = () => {
 
   return (
     <Container fixed>
+      <Autocomplete
+        id="free-solo-2-demo"
+        disableClearable
+        options={data.map((option: any) => option.code)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Search"
+            InputProps={{
+              ...params.InputProps,
+              type: 'search',
+            }}
+            sx={{ maxWidth: '25%' }}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+          />
+        )}
+      />
       {isFavLoading ? (
         <div>Loading Fav...</div>
       ) : (
@@ -267,7 +293,12 @@ const HomePage = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <CryptoTable columns={cols} data={data} />
+        <CryptoTable
+          columns={cols}
+          data={data}
+          searchKeyword={searchKeyword}
+          pagination
+        />
       )}
 
       {open && (
