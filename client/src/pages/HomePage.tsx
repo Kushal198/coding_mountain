@@ -73,16 +73,7 @@ const HomePage = () => {
 
   const handleClose = () => setOpen(false);
 
-  const removeFavourite = useCallback((id: any) => {
-    // getProductInfoAction(id);
-
-    // const data = await axios.put('/api/favorite-coins',{
-
-    // })
-    console.log(id);
-  }, []);
-
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async () => {
     const { data } = await axios.put('/api/favorite-coins', {
       code,
       minimumPrice,
@@ -117,27 +108,6 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    // const test = (id:any) => {
-    //   const selectedIndex:any = selected.indexOf(id);
-
-    //   let newSelected:any = [];
-
-    //   if (selectedIndex === -1) {
-    //     newSelected = newSelected.concat(selected, id);
-    //   } else if (selectedIndex === 0) {
-    //     newSelected = newSelected.concat(selected.slice(1));
-    //   } else if (selectedIndex === selected.length - 1) {
-    //     newSelected = newSelected.concat(selected.slice(0, -1));
-    //   } else if (selectedIndex > 0) {
-    //     newSelected = newSelected.concat(
-    //       selected.slice(0, selectedIndex),
-    //       selected.slice(selectedIndex + 1),
-    //     );
-    //   }
-    //   console.log(selected);
-    //   setSelected(newSelected);
-    // }
-    // test(fav.map((item:any) => item.id))
     setSelected(fav.map((item: any) => item.id));
   }, [fav]);
 
@@ -247,19 +217,19 @@ const HomePage = () => {
         Header: 'Price',
         accessor: 'price',
         cellClass: 'cellStyling',
-        Cell: (props: any) => <>{props.value}</>,
+        Cell: (props: any) => <>{props.row.original.price}</>,
       },
       {
         Header: 'Market Cap',
         accessor: 'marketCap',
         cellClass: 'cellStyling',
-        Cell: (props: any) => <>{props.value}</>,
+        Cell: (props: any) => <>{props.row.original.marketCap}</>,
       },
       {
         Header: '24H',
         accessor: 'h24',
         cellClass: 'cellStyling',
-        Cell: (props: any) => <>{props.value}</>,
+        Cell: (props: any) => <>{props.row.original.h24}</>,
       },
     ],
     [handleChange]
@@ -287,7 +257,7 @@ const HomePage = () => {
       {isFavLoading ? (
         <div>Loading Fav...</div>
       ) : (
-        <>{fav.length > 0 && <CryptoTable columns={favCols} data={fav} />}</>
+        <>{fav ? <CryptoTable columns={favCols} data={fav} /> : null}</>
       )}
 
       {isLoading ? (

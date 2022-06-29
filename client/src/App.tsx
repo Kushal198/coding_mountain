@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Box } from '@mui/material';
 import HomePage from './pages/HomePage';
+import { io } from 'socket.io-client';
 
 function App() {
+  useEffect(() => {
+    const socket = io('http://localhost:5050', { transports: ['websocket'] });
+
+    socket.on('hello', (arg: any) => {
+      console.log(arg);
+    });
+
+    socket.emit('howdy', 'stranger');
+  }, []);
+
   return (
     <div className="App">
       <Box

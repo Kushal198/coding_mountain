@@ -3,6 +3,7 @@ import express, { Express } from 'express';
 import morgan from 'morgan';
 import routes from './routes/api';
 import job from './cronjob/schedule';
+import { setUpIo } from './socket';
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
@@ -51,8 +52,19 @@ router.use((req, res, next) => {
 });
 
 /** Server */
-const httpServer = http.createServer(router);
-const PORT: any = process.env.PORT ?? 5050;
+const httpServer: http.Server = http.createServer(router);
+
+let io = setUpIo(httpServer);
+io.on('connection', (socket: any) => {
+  console.log('exect');
+  socket.emit('hello', 'world');
+
+  socket.on('howdy', (arg: any) => {
+    console.log(arg);
+  });
+});
+
+const PORT: string | number = process.env.PORT ?? 5050;
 httpServer.listen(PORT, () => {
   console.log(`The server is running on port ${PORT}`);
   job.coinRefresh();

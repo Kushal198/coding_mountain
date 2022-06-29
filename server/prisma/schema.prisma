@@ -27,4 +27,31 @@ model Coin{
 
   h24 String
 
+  clients Wishlist[]
+}
+
+model Client{
+  id Int @id @default(autoincrement())
+
+  uuid String @unique
+
+  coins Wishlist[]
+}
+
+model Wishlist{
+  id Int @id @default(autoincrement())
+
+  coin Coin @relation(fields: [coinId], references: [id])
+
+  coinId Int 
+
+  user Client @relation(fields: [userId], references: [id])
+
+  userId Int  
+
+  minimumValue Int
+
+  maximumValue Int
+
+  @@unique([coinId,userId])
 }
