@@ -74,7 +74,7 @@ const HomePage = () => {
   const handleClose = () => setOpen(false);
 
   const handleSubmit = async () => {
-    const { data } = await axios.put('/api/favorite-coins', {
+    const { data } = await axios.put('/api/watch-list', {
       code,
       minimumPrice,
       maximumPrice,

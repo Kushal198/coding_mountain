@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import axios, { AxiosResponse } from 'axios';
-import scrapData from '../scrapper';
 import prisma from '../db/prisma';
 import { generateToken } from '../jwt';
 import ScrapData from '../scrapper';
 
-interface Coin {
+export interface Coin {
   name: String;
   image: String;
   code: String;
@@ -13,15 +11,12 @@ interface Coin {
   marketCap: String;
   h24: String;
 }
-export interface UserData {
-  uuid: string;
-  iat: string;
-  exp: string;
-}
 
-export interface UserRequest extends Request {
-  user: UserData;
-}
+type WishList = {
+  code: string;
+  minimumPrice: string;
+  maximumPrice: string;
+};
 
 const getPriceFeed = async (
   req: Request,
@@ -122,59 +117,61 @@ const updateWatchList = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userInfo = req.user;
-  let favorites;
-  if (userInfo) {
-    let watchList = req.body ?? null;
+  try {
+    const userInfo = req.user;
+    let favorites;
+    if (userInfo) {
+      let watchList: WishList = req.body ?? null;
 
-    let minVal = parseInt(watchList.minimumPrice);
-    let maxVal = parseInt(watchList.maximumPrice);
+      let minVal = parseInt(watchList.minimumPrice);
+      let maxVal = parseInt(watchList.maximumPrice);
 
-    const coin = await prisma.coin.findUnique({
-      where: {
-        code: watchList.code,
-      },
-    });
-
-    const user = await prisma.client.findUnique({
-      where: {
-        uuid: userInfo.uuid,
-      },
-    });
-    console.log(user, coin);
-
-    await prisma.wishlist.create({
-      data: {
-        coin: {
-          connect: {
-            id: coin?.id,
-          },
+      const coin = await prisma.coin.findUnique({
+        where: {
+          code: watchList.code,
         },
-        user: {
-          connect: {
-            id: user?.id,
-          },
-        },
-        minimumValue: minVal,
-        maximumValue: maxVal,
-      },
-    });
+      });
 
-    favorites = await prisma.wishlist.findMany({
-      where: {
-        user: {
+      const user = await prisma.client.findUnique({
+        where: {
           uuid: userInfo.uuid,
         },
-      },
-      include: {
-        user: true,
-        coin: true,
-      },
-    });
-  }
-  console.log(favorites);
+      });
 
-  return res.status(200).json(favorites?.map((item) => item.coin));
+      await prisma.wishlist.create({
+        data: {
+          coin: {
+            connect: {
+              id: coin?.id,
+            },
+          },
+          user: {
+            connect: {
+              id: user?.id,
+            },
+          },
+          minimumValue: minVal,
+          maximumValue: maxVal,
+        },
+      });
+
+      favorites = await prisma.wishlist.findMany({
+        where: {
+          user: {
+            uuid: userInfo.uuid,
+          },
+        },
+        include: {
+          user: true,
+          coin: true,
+        },
+      });
+    }
+
+    return res.status(200).json(favorites?.map((item) => item.coin));
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const getWatchList = async (
@@ -182,24 +179,27 @@ const getWatchList = async (
   res: Response,
   next: NextFunction
 ) => {
-  let favorites;
-  if (req.user) {
-    const uuid = req.user.uuid;
-    favorites = await prisma.wishlist.findMany({
-      where: {
-        user: {
-          uuid,
+  try {
+    let favorites;
+    if (req.user) {
+      const uuid = req.user.uuid;
+      favorites = await prisma.wishlist.findMany({
+        where: {
+          user: {
+            uuid,
+          },
         },
-      },
-      include: {
-        user: true,
-        coin: true,
-      },
-    });
-  }
-  console.log(favorites);
+        include: {
+          user: true,
+          coin: true,
+        },
+      });
+    }
 
-  return res.status(200).json({ results: favorites?.map((c) => c.coin) });
+    return res.status(200).json({ results: favorites?.map((c) => c.coin) });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const removeWatchList = async (
@@ -207,48 +207,52 @@ const removeWatchList = async (
   res: Response,
   next: NextFunction
 ) => {
-  const id = req.body.id;
+  try {
+    const id = req.body.id;
 
-  const coin = await prisma.coin.findUnique({
-    where: {
-      id,
-    },
-  });
-
-  const uuid = req.user.uuid;
-  const user: any = await prisma.client.findUnique({
-    where: { uuid },
-  });
-
-  if (coin) {
-    await prisma.wishlist.delete({
+    const coin = await prisma.coin.findUnique({
       where: {
-        coinId_userId: {
-          coinId: coin.id,
-          userId: user?.id,
-        },
+        id,
       },
     });
-  }
 
-  let favorites;
-
-  if (req.user) {
     const uuid = req.user.uuid;
-    favorites = await prisma.wishlist.findMany({
-      where: {
-        user: {
-          uuid,
-        },
-      },
-      include: {
-        user: true,
-        coin: true,
-      },
+    const user: any = await prisma.client.findUnique({
+      where: { uuid },
     });
-  }
 
-  return res.status(200).json({ results: favorites?.map((c) => c.coin) });
+    if (coin) {
+      await prisma.wishlist.delete({
+        where: {
+          coinId_userId: {
+            coinId: coin.id,
+            userId: user?.id,
+          },
+        },
+      });
+    }
+
+    let favorites;
+
+    if (req.user) {
+      const uuid = req.user.uuid;
+      favorites = await prisma.wishlist.findMany({
+        where: {
+          user: {
+            uuid,
+          },
+        },
+        include: {
+          user: true,
+          coin: true,
+        },
+      });
+    }
+
+    return res.status(200).json({ results: favorites?.map((c) => c.coin) });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const getFavoriteCoins = async (
@@ -256,23 +260,28 @@ const getFavoriteCoins = async (
   res: Response,
   next: NextFunction
 ) => {
-  let favorites;
-  if (req.user) {
-    const uuid = req.user.uuid;
-    favorites = await prisma.wishlist.findMany({
-      where: {
-        user: {
-          uuid,
+  try {
+    let favorites;
+    if (req.user) {
+      const uuid = req.user.uuid;
+      favorites = await prisma.wishlist.findMany({
+        where: {
+          user: {
+            uuid,
+          },
         },
-      },
-      include: {
-        user: true,
-        coin: true,
-      },
-    });
+        include: {
+          user: true,
+          coin: true,
+        },
+      });
+    }
+    return res
+      .status(200)
+      .json({ results: favorites?.map((item) => item.coin) });
+  } catch (err) {
+    console.log(err);
   }
-
-  return res.status(200).json({ results: favorites?.map((item) => item.coin) });
 };
 
 export default {

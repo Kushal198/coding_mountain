@@ -1,6 +1,4 @@
-import { sign, SignOptions, verify, VerifyOptions } from 'jsonwebtoken';
-import * as fs from 'fs';
-import * as path from 'path';
+import { sign, verify } from 'jsonwebtoken';
 
 interface TokenPayload {
   exp: number;
@@ -10,10 +8,11 @@ interface TokenPayload {
 
 /**
  * generates JWT used for local testing
+ * @param data payload
  */
-export function generateToken(param: any) {
+export function generateToken(data: any) {
   // information to be encoded in the JWT
-  const payload = param;
+  const payload = data;
 
   // generate JWT
   return sign({ uuid: payload }, 'secret1234', { expiresIn: 60 * 60 * 60 });

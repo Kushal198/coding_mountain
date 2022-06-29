@@ -1,10 +1,11 @@
 import * as schedule from 'node-schedule';
 import prisma from '../db/prisma';
 import ScrapData from '../scrapper';
-import { getIO } from '../socket';
-import controller from '../controllers/api';
-import axios from 'axios';
+import { Coin } from '../controllers/api';
 
+/**
+ * @Schedule Job class to fetch price feed every 5 minutes
+ */
 class Job {
   constructor() {}
 

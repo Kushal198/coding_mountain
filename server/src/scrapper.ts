@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import cheerio from 'cheerio';
+import { Coin } from './controllers/api';
 
 export default class ScrapData {
   constructor() {}
@@ -24,7 +25,7 @@ export default class ScrapData {
 
         let coinObj: any = {};
 
-        if (parentIdx) {
+        if (parentIdx <= 10) {
           $(parentElem)
             .children()
             .each((childrenIdx: number, childrenElem: HTMLElement) => {
