@@ -34,6 +34,7 @@ import {
   Paper,
   Pagination,
   TablePagination,
+  Skeleton,
 } from '@mui/material';
 
 interface TableProps {
@@ -96,6 +97,7 @@ export const CryptoTable: React.FC<TableProps> = ({
     },
     useFilters,
     useSortBy,
+
     usePagination
   ) as TableType;
   useEffect(() => {
@@ -143,6 +145,7 @@ export const CryptoTable: React.FC<TableProps> = ({
           <TableBody {...getTableBodyProps()}>
             {page.map((row: any) => {
               prepareRow(row);
+
               return (
                 <TableRow {...row.getRowProps()} key={`tr_${row.id}`}>
                   {row.cells.map((cell: any, cellIndex: number) => {

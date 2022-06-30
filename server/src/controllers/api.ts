@@ -106,6 +106,7 @@ const getPriceFeed = async (
         rank: 'asc',
       },
     });
+
     return res.status(200).json({ result: listPrice });
   } catch (err) {
     console.log(err);
@@ -119,6 +120,7 @@ const updateWatchList = async (
 ) => {
   try {
     const userInfo = req.user;
+
     let favorites;
     if (userInfo) {
       let watchList: WishList = req.body ?? null;

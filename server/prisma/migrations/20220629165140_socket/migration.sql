@@ -27,6 +27,12 @@ CREATE TABLE "Wishlist" (
     CONSTRAINT "Wishlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Client" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
+-- CreateTable
+CREATE TABLE "Socket" (
+    "socketId" TEXT NOT NULL,
+    "uuid" TEXT NOT NULL
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Coin_code_key" ON "Coin"("code");
 
@@ -35,3 +41,9 @@ CREATE UNIQUE INDEX "Client_uuid_key" ON "Client"("uuid");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Wishlist_coinId_userId_key" ON "Wishlist"("coinId", "userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Socket_socketId_key" ON "Socket"("socketId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Socket_uuid_key" ON "Socket"("uuid");

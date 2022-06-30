@@ -55,3 +55,9 @@ model Wishlist{
 
   @@unique([coinId,userId])
 }
+
+model Socket{
+  socketId String @unique
+
+  uuid String @unique
+}

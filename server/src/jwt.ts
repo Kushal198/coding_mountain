@@ -25,6 +25,9 @@ export function generateToken(data: any) {
  */
 export function validateToken(token: string): Promise<TokenPayload> {
   return new Promise((resolve, reject) => {
+    if (token.toLowerCase().startsWith('bearer')) {
+      token = token.slice('bearer'.length).trim();
+    }
     const decode: any = verify(token, 'secret1234');
     resolve(decode);
   });

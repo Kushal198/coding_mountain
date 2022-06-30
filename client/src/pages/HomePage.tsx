@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { CryptoTable } from '../components/CryptoDataTable';
+import '../App.css';
 
 import {
   Container,
   Tooltip,
-  Box,
   TextField,
   Modal,
   Autocomplete,
@@ -12,12 +12,25 @@ import {
   MenuItem,
   Button,
   Checkbox,
+  Box,
+  dividerClasses,
+  Badge,
+  AppBar,
+  Toolbar,
+  Skeleton,
+  TableRow,
+  TableCell,
 } from '@mui/material';
 
-import FavoriteIcon from '@mui/icons-material/Favorite';
+// import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
-import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import {
+  Favorite,
+  FavoriteBorder,
+  NotificationImportant,
+} from '@mui/icons-material';
+import { SocketContext } from '../socketContext';
 
 const style = {
   position: 'absolute',
@@ -28,6 +41,13 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
+};
+
+const refreshIndicator = {
+  position: 'relative',
+  width: '10px',
+  height: '10px',
+  marginLeft: '6px',
 };
 
 export type Payload = {
@@ -42,6 +62,7 @@ export type Payload = {
 };
 
 const HomePage = () => {
+  const socket = useContext(SocketContext);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [data, setData] = useState<Payload[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +73,12 @@ const HomePage = () => {
   const [code, setCode] = useState('');
   const [minimumPrice, setMinimumPrice] = useState(0);
   const [maximumPrice, setMaximumPrice] = useState(0);
+
+  useEffect(() => {
+    socket.on('priceChange', (arg: any) => {
+      setData(arg.results);
+    });
+  }, []);
 
   const handleOpen = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -108,10 +135,84 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    setSelected(fav.map((item: any) => item.id));
+    if (fav.length) {
+      setSelected(fav.map((item: any) => item.id));
+    }
   }, [fav]);
 
   const isSelected: any = (id: any) => selected.indexOf(id) !== -1;
+
+  const skeletonCols = React.useMemo(
+    () => [
+      {
+        Header: '',
+        accessor: 'id',
+        Cell: (props: any) => (
+          <Typography variant="h4">
+            {' '}
+            <Skeleton />
+          </Typography>
+        ),
+      },
+      {
+        Header: 'All Coins',
+        accessor: 'coins',
+        cellClass: '',
+        Cell: (props: any) => (
+          <Typography variant="h4">
+            {' '}
+            <Skeleton />
+          </Typography>
+        ),
+      },
+      {
+        Header: () => (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <div>Price</div>
+            <div className="refresh-indicator refresh-indicator--light refresh-indicator--running">
+              <div className="refresh-indicator__left-half">
+                <div className="refresh-indicator__left-half-progress"></div>
+              </div>{' '}
+              <div className="refresh-indicator__right-half">
+                <div className="refresh-indicator__right-half-progress"></div>
+              </div>
+            </div>
+          </Box>
+        ),
+        accessor: 'price',
+        cellClass: 'cellStyling',
+        Cell: (props: any) => (
+          <Typography variant="h4">
+            {' '}
+            <Skeleton />
+          </Typography>
+        ),
+      },
+      {
+        Header: 'Market Cap',
+        accessor: 'marketCap',
+        cellClass: 'cellStyling',
+        Cell: (props: any) => (
+          <Typography variant="h4">
+            {' '}
+            <Skeleton />
+          </Typography>
+        ),
+      },
+      {
+        Header: '24H',
+        accessor: 'h24',
+        cellClass: 'cellStyling',
+        Cell: (props: any) => (
+          <Typography variant="h4">
+            {' '}
+            <Skeleton />
+          </Typography>
+        ),
+      },
+    ],
+    [handleChange]
+  );
 
   const cols = React.useMemo(
     () => [
@@ -152,7 +253,19 @@ const HomePage = () => {
         ),
       },
       {
-        Header: 'Price',
+        Header: () => (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <div>Price</div>
+            <div className="refresh-indicator refresh-indicator--light refresh-indicator--running">
+              <div className="refresh-indicator__left-half">
+                <div className="refresh-indicator__left-half-progress"></div>
+              </div>{' '}
+              <div className="refresh-indicator__right-half">
+                <div className="refresh-indicator__right-half-progress"></div>
+              </div>
+            </div>
+          </Box>
+        ),
         accessor: 'price',
         cellClass: 'cellStyling',
         Cell: (props: any) => <>{props.value}</>,
@@ -214,7 +327,19 @@ const HomePage = () => {
       },
 
       {
-        Header: 'Price',
+        Header: () => (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <div>Price</div>
+            <div className="refresh-indicator refresh-indicator--light refresh-indicator--running">
+              <div className="refresh-indicator__left-half">
+                <div className="refresh-indicator__left-half-progress"></div>
+              </div>{' '}
+              <div className="refresh-indicator__right-half">
+                <div className="refresh-indicator__right-half-progress"></div>
+              </div>
+            </div>
+          </Box>
+        ),
         accessor: 'price',
         cellClass: 'cellStyling',
         Cell: (props: any) => <>{props.row.original.price}</>,
@@ -234,92 +359,118 @@ const HomePage = () => {
     ],
     [handleChange]
   );
+  const dumbSkel: any = {
+    id: 1,
+    name: 'Ethereum',
+    code: 'ETH',
+    rank: 2,
+    image: 'https://cdn.coinranking.com/rk4RKHOuW/eth.svg?size=30x30',
+    price: '$1,230.02',
+    marketCap: '$148.79 billion',
+    h24: '-0.03%',
+  };
 
   return (
-    <Container fixed>
-      <Autocomplete
-        id="free-solo-2-demo"
-        disableClearable
-        options={data.map((option: any) => option.code)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Search"
-            InputProps={{
-              ...params.InputProps,
-              type: 'search',
-            }}
-            sx={{ maxWidth: '25%' }}
-            onChange={(e) => setSearchKeyword(e.target.value)}
+    <>
+      <Container fixed>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'center',
+          }}
+        ></div>
+
+        <Autocomplete
+          id="free-solo-2-demo"
+          disableClearable
+          options={data.map((option: any) => option.code)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search"
+              InputProps={{
+                ...params.InputProps,
+                type: 'search',
+              }}
+              sx={{ maxWidth: '50%' }}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            />
+          )}
+        />
+
+        {isFavLoading ? (
+          <CryptoTable columns={skeletonCols} data={Array(5).fill(dumbSkel)} />
+        ) : (
+          <>{fav ? <CryptoTable columns={favCols} data={fav} /> : null}</>
+        )}
+
+        {isLoading ? (
+          <CryptoTable
+            columns={skeletonCols}
+            data={Array(10).fill(dumbSkel)}
+            searchKeyword={searchKeyword}
+            pagination
+          />
+        ) : (
+          <CryptoTable
+            columns={cols}
+            data={data}
+            searchKeyword={searchKeyword}
+            pagination
           />
         )}
-      />
-      {isFavLoading ? (
-        <div>Loading Fav...</div>
-      ) : (
-        <>{fav ? <CryptoTable columns={favCols} data={fav} /> : null}</>
-      )}
 
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <CryptoTable
-          columns={cols}
-          data={data}
-          searchKeyword={searchKeyword}
-          pagination
-        />
-      )}
-
-      {open && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <div>
-              <TextField
-                style={{ width: '100%', marginBottom: '30px' }}
-                select
-                label="Select"
-                value={code}
-                onChange={handleChange}
-                helperText="Please select your coin"
-              >
-                {data?.map((option: any) => (
-                  <MenuItem key={option.code} value={option.code}>
-                    {option.name} ({option.code})
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                style={{ width: '100%', marginBottom: '30px' }}
-                type="number"
-                label="Minimum Price"
-                value={minimumPrice}
-                onChange={(event: any) => setMinimumPrice(event.target.value)}
-              />
-              <TextField
-                style={{ width: '100%', marginBottom: '30px' }}
-                type="number"
-                label="Maxiumum Price"
-                value={maximumPrice}
-                onChange={(event: any) => setMaximumPrice(event.target.value)}
-              />
-              <Button
-                style={{ width: '100%' }}
-                variant="outlined"
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
-            </div>
-          </Box>
-        </Modal>
-      )}
-    </Container>
+        {open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <div>
+                <TextField
+                  style={{ width: '100%', marginBottom: '30px' }}
+                  select
+                  label="Select"
+                  value={code}
+                  onChange={handleChange}
+                  helperText="Please select your coin"
+                >
+                  {data?.map((option: any) => (
+                    <MenuItem key={option.code} value={option.code}>
+                      {option.name} ({option.code})
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  style={{ width: '100%', marginBottom: '30px' }}
+                  type="number"
+                  label="Minimum Price"
+                  value={minimumPrice}
+                  onChange={(event: any) => setMinimumPrice(event.target.value)}
+                />
+                <TextField
+                  style={{ width: '100%', marginBottom: '30px' }}
+                  type="number"
+                  label="Maxiumum Price"
+                  value={maximumPrice}
+                  onChange={(event: any) => setMaximumPrice(event.target.value)}
+                />
+                <Button
+                  style={{ width: '100%' }}
+                  variant="outlined"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              </div>
+            </Box>
+          </Modal>
+        )}
+      </Container>
+    </>
   );
 };
 
