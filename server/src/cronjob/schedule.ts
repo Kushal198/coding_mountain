@@ -1,7 +1,6 @@
 import * as schedule from 'node-schedule';
 import prisma from '../db/prisma';
 import ScrapData from '../scrapper';
-import { Coin } from '../controllers/api';
 import axios from 'axios';
 import { getIO } from '../socket';
 
@@ -14,17 +13,35 @@ class Job {
   public coinRefresh() {
     let io = getIO();
     let rule = new schedule.RecurrenceRule();
+    //Schedule every minute
     rule.minute = rule.minute = new schedule.Range(0, 59, 1);
+    schedule.scheduleJob(rule, async function () {
+      const { data }: any = await axios.get(
+        'http://localhost:5050/api/price-feed'
+      );
+      io.emit('priceChange', { results: data.result });
+    });
+  }
+
+  public notify() {
+    let io = getIO();
+
+    let rule = new schedule.RecurrenceRule();
+
+    //Schedule every 5 minute
+    rule.minute = rule.minute = new schedule.Range(0, 59, 5);
     schedule.scheduleJob(rule, async function () {
       try {
         const { data }: any = await axios.get(
           'http://localhost:5050/api/price-feed'
         );
 
-        io.emit('priceChange', { results: data.result });
-
+        //Get connected sockets from table
         const sockets = await prisma.socket.findMany();
+
+        //Loop through sockets
         for (let item of sockets) {
+          //get client watchlist
           const wish = await prisma.wishlist.findMany({
             where: {
               user: {
@@ -37,8 +54,9 @@ class Job {
             },
           });
 
+          //if watchlist exists
           if (wish.length) {
-            console.log(item);
+            //Notify user when the coin price goes below specified minimum or above specified maximum price
             const filtered = wish.filter((ele: any) => {
               return data.result.some((item: any) => {
                 return (
@@ -51,55 +69,13 @@ class Job {
                 );
               });
             });
-            // console.log(filtered);
+
+            //Emit notification to client listening on notification namespace
             io.of('/notification').to(item.socketId).emit('notification', {
               data: filtered,
             });
           }
         }
-        // const latestData = await new ScrapData().getPriceFeed();
-        // for (let item of latestData) {
-        //   let name: string = item.allCoins.name;
-        //   let code: string = item.allCoins.code;
-        //   let image: string = item.allCoins.image;
-        //   let rank: number = item.allCoins.rank;
-        //   let price: string = item.price;
-        //   let marketCap: string = item.marketCap;
-        //   let h24: string = item['24h'];
-
-        //   if (code != '') {
-        //     const findCoin = await prisma.coin.findUnique({
-        //       where: {
-        //         code,
-        //       },
-        //     });
-        //     if (findCoin) {
-        //       await prisma.coin.update({
-        //         where: {
-        //           code,
-        //         },
-        //         data: {
-        //           price,
-        //           marketCap,
-        //           h24,
-        //           rank,
-        //         },
-        //       });
-        //     } else {
-        //       await prisma.coin.create({
-        //         data: {
-        //           name,
-        //           image,
-        //           h24,
-        //           price,
-        //           rank,
-        //           code,
-        //           marketCap,
-        //         },
-        //       });
-        //     }
-        //   }
-        // }
       } catch (err) {
         console.log(err);
       }

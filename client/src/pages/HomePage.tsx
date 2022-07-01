@@ -1,7 +1,6 @@
-import React, { useEffect, useContext, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { CryptoTable } from '../components/CryptoDataTable';
 import '../App.css';
-
 import {
   Container,
   Tooltip,
@@ -13,24 +12,17 @@ import {
   Button,
   Checkbox,
   Box,
-  dividerClasses,
-  Badge,
-  AppBar,
-  Toolbar,
   Skeleton,
-  TableRow,
-  TableCell,
 } from '@mui/material';
-
-// import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
-import {
-  Favorite,
-  FavoriteBorder,
-  NotificationImportant,
-} from '@mui/icons-material';
-import { SocketContext } from '../socketContext';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
+// import { SocketContext } from '../socketContext';
+import { io, Socket } from 'socket.io-client';
+
+const socket = io('http://localhost:5050', {
+  transports: ['websocket', 'pooling'],
+});
 
 const style = {
   position: 'absolute',
@@ -43,13 +35,7 @@ const style = {
   p: 4,
 };
 
-const refreshIndicator = {
-  position: 'relative',
-  width: '10px',
-  height: '10px',
-  marginLeft: '6px',
-};
-
+/** Coin Data Type */
 export type Payload = {
   id: number;
   name: string;
@@ -62,7 +48,7 @@ export type Payload = {
 };
 
 const HomePage = () => {
-  const socket = useContext(SocketContext);
+  // const socket = useContext(SocketContext);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [data, setData] = useState<Payload[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,12 +60,14 @@ const HomePage = () => {
   const [minimumPrice, setMinimumPrice] = useState(0);
   const [maximumPrice, setMaximumPrice] = useState(0);
 
+  /** Listen for price changes */
   useEffect(() => {
     socket.on('priceChange', (arg: any) => {
       setData(arg.results);
     });
   }, []);
 
+  /** Function to open modal when favorite icon is clicked*/
   const handleOpen = async (
     event: React.ChangeEvent<HTMLInputElement>,
     id: number
@@ -98,8 +86,10 @@ const HomePage = () => {
     }
   };
 
+  /** Closing modal*/
   const handleClose = () => setOpen(false);
 
+  /** Submit event for updating watchList*/
   const handleSubmit = async () => {
     const { data } = await axios.put('/api/watch-list', {
       code,
@@ -113,10 +103,12 @@ const HomePage = () => {
     setMaximumPrice(0);
   };
 
+  /** Setting selected coin code in input select field*/
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCode(event.target.value);
   };
 
+  /** Fetching price feed data and Watch list data*/
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -134,19 +126,22 @@ const HomePage = () => {
     fetchFavorite();
   }, []);
 
+  /** Check for check in Watchlist data*/
   useEffect(() => {
-    if (fav.length) {
+    if (fav) {
       setSelected(fav.map((item: any) => item.id));
     }
   }, [fav]);
 
   const isSelected: any = (id: any) => selected.indexOf(id) !== -1;
 
+  /** Dummy Skeleton Column*/
   const skeletonCols = React.useMemo(
     () => [
       {
         Header: '',
         accessor: 'id',
+        isVisible: true,
         Cell: (props: any) => (
           <Typography variant="h4">
             {' '}
@@ -158,6 +153,7 @@ const HomePage = () => {
         Header: 'All Coins',
         accessor: 'coins',
         cellClass: '',
+        isVisible: true,
         Cell: (props: any) => (
           <Typography variant="h4">
             {' '}
@@ -165,6 +161,7 @@ const HomePage = () => {
           </Typography>
         ),
       },
+
       {
         Header: () => (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -181,6 +178,7 @@ const HomePage = () => {
         ),
         accessor: 'price',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => (
           <Typography variant="h4">
             {' '}
@@ -192,6 +190,7 @@ const HomePage = () => {
         Header: 'Market Cap',
         accessor: 'marketCap',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => (
           <Typography variant="h4">
             {' '}
@@ -203,6 +202,7 @@ const HomePage = () => {
         Header: '24H',
         accessor: 'h24',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => (
           <Typography variant="h4">
             {' '}
@@ -214,11 +214,13 @@ const HomePage = () => {
     [handleChange]
   );
 
+  /** All Coins Column*/
   const cols = React.useMemo(
     () => [
       {
         Header: '',
         accessor: 'id',
+        isVisible: true,
         Cell: (props: any) => (
           <>
             <Tooltip title="Add To Watchlist">
@@ -236,9 +238,17 @@ const HomePage = () => {
         ),
       },
       {
+        Header: 'Name',
+        accessor: 'name',
+        cellClass: 'cellStyling',
+        isVisible: true,
+        Cell: (props: any) => <>{props.row.original.name}</>,
+      },
+      {
         Header: 'All Coins',
         accessor: 'coins',
         cellClass: '',
+        isVisible: true,
         Cell: (props: any) => (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ mr: 4 }}>
@@ -268,30 +278,34 @@ const HomePage = () => {
         ),
         accessor: 'price',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => <>{props.value}</>,
       },
       {
         Header: 'Market Cap',
         accessor: 'marketCap',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => <>{props.value}</>,
       },
       {
         Header: '24H',
         accessor: 'h24',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => <>{props.value}</>,
       },
     ],
     [handleChange]
   );
 
-  //Favorite cols
+  /** Favorite Coins Column*/
   const favCols = React.useMemo(
     () => [
       {
         Header: '',
         accessor: 'id',
+        isVisible: true,
         Cell: (props: any) => (
           <>
             <Tooltip title="Remove From Watchlist">
@@ -312,6 +326,7 @@ const HomePage = () => {
         Header: 'Favorites',
         accessor: 'coins',
         cellClass: '',
+        isVisible: true,
         Cell: (props: any) => (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ mr: 4 }}>
@@ -342,24 +357,29 @@ const HomePage = () => {
         ),
         accessor: 'price',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => <>{props.row.original.price}</>,
       },
       {
         Header: 'Market Cap',
         accessor: 'marketCap',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => <>{props.row.original.marketCap}</>,
       },
       {
         Header: '24H',
         accessor: 'h24',
         cellClass: 'cellStyling',
+        isVisible: true,
         Cell: (props: any) => <>{props.row.original.h24}</>,
       },
     ],
     [handleChange]
   );
-  const dumbSkel: any = {
+
+  /** Dummy Data for Skeleton Loading*/
+  const dumbSkel = {
     id: 1,
     name: 'Ethereum',
     code: 'ETH',
@@ -373,18 +393,10 @@ const HomePage = () => {
   return (
     <>
       <Container fixed>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'end',
-            alignItems: 'center',
-          }}
-        ></div>
-
         <Autocomplete
           id="free-solo-2-demo"
           disableClearable
-          options={data.map((option: any) => option.code)}
+          options={data.map((option: any) => option.name)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -399,13 +411,13 @@ const HomePage = () => {
           )}
         />
 
-        {isFavLoading ? (
-          <CryptoTable columns={skeletonCols} data={Array(5).fill(dumbSkel)} />
-        ) : (
-          <>{fav ? <CryptoTable columns={favCols} data={fav} /> : null}</>
-        )}
+        {/* {isFavLoading ? ( */}
+        {/* <CryptoTable columns={skeletonCols} data={Array(5).fill(dumbSkel)} /> */}
+        {/* ) : ( */}
+        <>{fav ? <CryptoTable columns={favCols} data={fav} /> : null}</>
+        {/* )} */}
 
-        {isLoading ? (
+        {/* {isLoading ? (
           <CryptoTable
             columns={skeletonCols}
             data={Array(10).fill(dumbSkel)}
@@ -414,12 +426,13 @@ const HomePage = () => {
           />
         ) : (
           <CryptoTable
+            defaultPageSize={5}
             columns={cols}
             data={data}
             searchKeyword={searchKeyword}
             pagination
           />
-        )}
+        )} */}
 
         {open && (
           <Modal
@@ -435,7 +448,7 @@ const HomePage = () => {
                   select
                   label="Select"
                   value={code}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   helperText="Please select your coin"
                 >
                   {data?.map((option: any) => (

@@ -1,28 +1,18 @@
-/* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+/* eslint-disable react/jsx-key */
+/* eslint-disable react/no-array-index-key */
+import React, { useState, useEffect } from 'react';
 import {
   useTable,
   usePagination,
-  Column,
   useSortBy,
   useFilters,
-  Cell,
-  TableOptions,
   TableInstance,
-  UsePaginationInstanceProps,
-  UsePaginationState,
-  UseSortByInstanceProps,
-  UseColumnOrderState,
-  UseFiltersState,
-  UseExpandedState,
-  UseGlobalFiltersState,
-  UseResizeColumnsState,
-  UseGroupByState,
-  UseRowSelectState,
-  UseRowStateState,
-  UseSortByState,
+  UsePaginationOptions,
+  TableState,
+  useGlobalFilter,
 } from 'react-table';
-import PropTypes from 'prop-types';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import {
   Table,
@@ -33,8 +23,9 @@ import {
   TableRow,
   Paper,
   Pagination,
-  TablePagination,
-  Skeleton,
+  Box,
+  IconButton,
+  Typography,
 } from '@mui/material';
 
 interface TableProps {
@@ -45,63 +36,50 @@ interface TableProps {
   searchKeyword?: string;
 }
 
-type TableType = TableInstance & {
-  gotoPage: (index: number) => void;
-  setFilter: (arg1: any, arg2: any) => void;
-  setPageSize: () => void;
-  page: any;
-  canPreviousPage: boolean;
-  canNextPage: boolean;
-  pageCount: number;
-  state: {
-    pageIndex: number;
-    pageSize: number;
-  };
-};
-
 export const CryptoTable: React.FC<TableProps> = ({
   columns,
   data,
-  defaultPageSize = 20,
+  defaultPageSize,
   pagination,
   searchKeyword,
 }) => {
   const {
     getTableProps,
     getTableBodyProps,
-    prepareRow,
     setFilter,
     headerGroups,
+    prepareRow,
     page,
     canPreviousPage,
+    setGlobalFilter,
     canNextPage,
+    pageOptions,
     pageCount,
     gotoPage,
+    nextPage,
+    previousPage,
     setPageSize,
+    setHiddenColumns,
     state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
 
-      // initialState: {
-      //   pageIndex: 0,
-      //   // sortBy: [
-      //   //   {
-      //   //     id: 'rank',
-      //   //     asc: false,
-      //   //   },
-      //   // ],
-      //   pageSize: defaultPageSize,
-      // },
+      initialState: {
+        pageIndex: 0,
+        hiddenColumns: ['name'],
+        pageSize: 10,
+      },
     },
+    useGlobalFilter,
     useFilters,
     useSortBy,
-
     usePagination
-  ) as TableType;
+  );
+
   useEffect(() => {
-    setFilter('price', searchKeyword);
+    setGlobalFilter(searchKeyword);
   }, [searchKeyword]);
 
   // rendering the UI of table
@@ -112,32 +90,31 @@ export const CryptoTable: React.FC<TableProps> = ({
         <Table {...getTableProps()}>
           <TableHead>
             {headerGroups.map((headerGroup: any) => (
-              <TableRow
-                {...headerGroup.getHeaderGroupProps()}
-                key={`tr_${headerGroup.id}`}
-              >
-                {headerGroup.headers.map((column: any, columnIndex: number) => (
-                  <TableCell
-                    key={`th_${columnIndex}`}
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    className={
-                      column.isSorted
-                        ? column.isSortedDesc
-                          ? 'sorted-desc'
-                          : 'sorted-asc'
-                        : ''
-                    }
-                    sx={{
-                      fontWeight: 'bold',
-                      letterSpacing: '2.4px',
-                      lineHeight: '11px',
-                      color: '#214a88',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    {column.render('Header')}
-                  </TableCell>
-                ))}
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column: any, columnIndex: number) => {
+                  return (
+                    <TableCell
+                      key={`th_${columnIndex}`}
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className={
+                        column.isSorted
+                          ? column.isSortedDesc
+                            ? 'sorted-desc'
+                            : 'sorted-asc'
+                          : ''
+                      }
+                      sx={{
+                        fontWeight: 'bold',
+                        letterSpacing: '2.4px',
+                        lineHeight: '11px',
+                        color: '#214a88',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {column.render('Header')}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableHead>
@@ -147,24 +124,22 @@ export const CryptoTable: React.FC<TableProps> = ({
               prepareRow(row);
 
               return (
-                <TableRow {...row.getRowProps()} key={`tr_${row.id}`}>
+                <TableRow {...row.getRowProps()}>
                   {row.cells.map((cell: any, cellIndex: number) => {
                     return (
-                      <>
-                        <TableCell
-                          key={`td_${cellIndex}`}
-                          sx={{
-                            letterSpacing: '.35px',
-                            color: '#002358',
-                            fontWeight: 600,
-                            ...cell.getCellProps({
-                              display: cell.column.cellClass,
-                            }),
-                          }}
-                        >
-                          {cell.render('Cell')}
-                        </TableCell>
-                      </>
+                      <TableCell
+                        key={`td_${cellIndex}`}
+                        sx={{
+                          letterSpacing: '.35px',
+                          color: '#002358',
+                          fontWeight: 600,
+                          ...cell.getCellProps({
+                            display: cell.column.cellClass,
+                          }),
+                        }}
+                      >
+                        {cell.render('Cell')}
+                      </TableCell>
                     );
                   })}
                 </TableRow>
@@ -172,17 +147,32 @@ export const CryptoTable: React.FC<TableProps> = ({
             })}
           </TableBody>
         </Table>
+
         {pagination && (
-          <Pagination
-            count={pageCount - 1}
-            color="secondary"
-            page={pageIndex}
-            onChange={(e, p) => gotoPage(p)}
-            sx={{ p: 4, display: 'flex', justifyContent: 'center' }}
-          />
+          <Box
+            className="pagination"
+            sx={{ p: 3, display: 'flex', justifyContent: 'center' }}
+          >
+            <IconButton
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              <ArrowBackIosNewIcon />
+            </IconButton>{' '}
+            <IconButton onClick={() => nextPage()} disabled={!canNextPage}>
+              <ArrowForwardIosIcon />
+            </IconButton>{' '}
+            <div>
+              <Typography variant="h6" component="div">
+                Page{' '}
+                <strong>
+                  {pageIndex + 1} of {pageOptions.length}
+                </strong>{' '}
+              </Typography>
+            </div>
+          </Box>
         )}
       </TableContainer>
-      )
     </>
   );
 };

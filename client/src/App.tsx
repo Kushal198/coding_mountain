@@ -9,21 +9,21 @@ import {
   Badge,
   Menu,
   MenuItem,
-  Divider,
 } from '@mui/material';
 import HomePage from './pages/HomePage';
-import { io } from 'socket.io-client';
 import { SocketContext, SocketProvider } from './socketContext';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 function App() {
   const socket = useContext(SocketContext);
+
   const [notification, setNotification] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
+  /** Listen for notification from server when favorite coin price goes below or above the cap specifed*/
   useEffect(() => {
     socket.on('notification', (arg: any) => {
       setNotification(arg.data);
@@ -73,7 +73,7 @@ function App() {
   return (
     <SocketProvider>
       <div className="App">
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, mb: 8 }}>
           <AppBar>
             <Toolbar variant="dense" style={{ display: 'flex' }}>
               <IconButton
@@ -94,18 +94,15 @@ function App() {
             </Toolbar>
           </AppBar>
           {renderMenu}
-          {/* <Badge color="primary" badgeContent={notification.length}>
-            <NotificationsNoneIcon />
-          </Badge> */}
         </Box>
         <Box
           sx={{
-            fontSize: 'h6.fontSize',
+            fontSize: 'h5.fontSize',
             textAlign: 'center',
             color: '#002358',
             fontWeight: '800',
             textTransform: 'uppercase',
-            my: 3,
+            my: 4,
           }}
         >
           Crypto Currency Price Rate
