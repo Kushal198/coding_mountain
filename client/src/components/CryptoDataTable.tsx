@@ -1,14 +1,11 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/no-array-index-key */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   useTable,
   usePagination,
   useSortBy,
   useFilters,
-  TableInstance,
-  UsePaginationOptions,
-  TableState,
   useGlobalFilter,
 } from 'react-table';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -22,7 +19,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Pagination,
   Box,
   IconButton,
   Typography,
@@ -39,14 +35,12 @@ interface TableProps {
 export const CryptoTable: React.FC<TableProps> = ({
   columns,
   data,
-  defaultPageSize,
   pagination,
   searchKeyword,
 }) => {
   const {
     getTableProps,
     getTableBodyProps,
-    setFilter,
     headerGroups,
     prepareRow,
     page,
@@ -54,13 +48,9 @@ export const CryptoTable: React.FC<TableProps> = ({
     setGlobalFilter,
     canNextPage,
     pageOptions,
-    pageCount,
-    gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
-    setHiddenColumns,
-    state: { pageIndex, pageSize },
+    state: { pageIndex },
   } = useTable(
     {
       columns,
@@ -78,6 +68,7 @@ export const CryptoTable: React.FC<TableProps> = ({
     usePagination
   );
 
+  //Searching coins
   useEffect(() => {
     setGlobalFilter(searchKeyword);
   }, [searchKeyword]);

@@ -1,30 +1,28 @@
 import express from 'express';
-import ApiController from '../controllers/api';
+import { ApiController } from '../controllers/api';
 const router = express.Router();
-import { authenticate } from '../../auth';
+import { middleware } from '../../middleware';
 
-/**
- * @Route Get Price Feed for all scrapped crypto
- */
-router.get('/price-feed', authenticate(), new ApiController().getPriceFeed);
+export default function (apiService: any) {
+  const controller = new ApiController(apiService);
+  /**
+   * @Route Get Price Feed for all scrapped crypto
+   */
+  router.get('/price-feed', middleware(), controller.getPriceFeed);
 
-/**
- * @Route Get Crypto Added To WatchList
- */
-router.get('/watch-list', authenticate(), new ApiController().getWatchList);
+  /**
+   * @Route Get Crypto Added To WatchList
+   */
+  router.get('/watch-list', middleware(), controller.getWatchList);
 
-/**
- * @Route Add or Update WatchList Crypto
- */
-router.put('/watch-list', authenticate(), new ApiController().updateWatchList);
+  /**
+   * @Route Add or Update WatchList Crypto
+   */
+  router.put('/watch-list', middleware(), controller.updateWatchList);
 
-/**
- * @Route Delete Crypto from Watch List
- */
-router.delete(
-  '/watch-list',
-  authenticate(),
-  new ApiController().removeWatchList
-);
-
-export = router;
+  /**
+   * @Route Delete Crypto from Watch List
+   */
+  router.delete('/watch-list', middleware(), controller.removeWatchList);
+  return router;
+}

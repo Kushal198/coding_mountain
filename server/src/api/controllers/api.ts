@@ -1,21 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
 import { generateToken } from '../../jwt';
 import ScrapData from '../../scrapper';
-import { ApiService } from '../services/api';
-import { Coin, WishList, ScrappedData } from '../types/type';
+import { Coin, WishList, ScrappedData, Client } from '../types/type';
+// import * as apiService from '../services/api';
 
-export default class ApiController {
+// type ApiService = typeof apiService;
+
+export class ApiController {
   private apiService;
-  constructor() {
-    this.apiService = new ApiService();
+  constructor(apiService: any) {
+    this.apiService = apiService;
   }
 
   /**@Get Price Feed Controller */
-  getPriceFeed = async (req: Request, res: Response, next: NextFunction) => {
-    //Get access token from cookies
-    const user = req.cookies['tokenSignature']
-      ? req.cookies['tokenSignature']
-      : null;
+  getPriceFeed = async (
+    req: Request | any,
+    res: Response,
+    next: NextFunction
+  ) => {
+    //Get user from request
+    const user = req.user;
 
     if (!user) {
       let dt = new Date().getTime();
@@ -35,8 +39,10 @@ export default class ApiController {
       //Create client if not exists and set cookie
       if (!userExists) {
         await this.apiService.createClient(uuid);
+
         const token = generateToken(uuid);
-        res.cookie('tokenSignature', `Bearer ${token}`, {
+
+        res.cookie('tokensignature', `Bearer ${token}`, {
           maxAge: 540 * 60 * 60 * 1000,
         });
       }
@@ -58,7 +64,7 @@ export default class ApiController {
           if (code !== '') {
             const findCoin = await this.apiService.findUniqueCoin(code);
             if (findCoin) {
-              await this.apiService.updateCoin(
+              const up = await this.apiService.updateCoin(
                 code,
                 price,
                 h24,
@@ -66,7 +72,7 @@ export default class ApiController {
                 rank
               );
             } else {
-              await this.apiService.createCoin(
+              const cp = await this.apiService.createCoin(
                 name,
                 image,
                 h24,
@@ -94,7 +100,7 @@ export default class ApiController {
   ) => {
     try {
       //get user from request
-      const userInfo = req.user;
+      const userInfo: Client = req.user;
 
       let favorites;
       if (userInfo) {
@@ -104,18 +110,26 @@ export default class ApiController {
         let minVal = parseInt(watchList.minimumPrice);
         let maxVal = parseInt(watchList.maximumPrice);
 
-        //Find coin
+        // //Find coin
         const coin = await this.apiService.findUniqueCoin(watchList.code);
 
-        //Find Client
+        // //Find Client
         const user = await this.apiService.findUniqueClient(userInfo.uuid);
 
-        //create watchlist for client with specified minimumPrice and maximumPrice
-        await this.apiService.createWatchList(minVal, maxVal, coin, user);
+        // Find if coin already exists in watchlist of client
+        const watch = await this.apiService.uniqueCoinClientWatchList(
+          user.id,
+          coin.id
+        );
 
-        favorites = await this.apiService.clientWatchList(user);
+        if (!watch) {
+          //create watchlist for client with specified minimumPrice and maximumPrice
+          await this.apiService.createWatchList(minVal, maxVal, coin, user);
+        }
+
+        favorites = await this.apiService.clientWatchList(user.uuid);
       }
-      return res.status(201).json(favorites?.map((item) => item.coin));
+      return res.status(201).json(favorites?.map((item: any) => item.coin));
     } catch (err) {
       console.log(err);
     }
@@ -129,13 +143,19 @@ export default class ApiController {
   ) => {
     try {
       let favorites;
+
       if (req.user) {
         //Get user
         const uuid = req.user.uuid;
+
         //get client watchlists
         favorites = await this.apiService.clientWatchList(uuid);
+
+        return res
+          .status(200)
+          .json({ results: favorites?.map((c: any) => c.coin) });
       }
-      return res.status(200).json({ results: favorites?.map((c) => c.coin) });
+      return res.status(200).json({ results: [] });
     } catch (err) {
       console.log(err);
     }
@@ -149,7 +169,7 @@ export default class ApiController {
   ) => {
     try {
       const id = req.body.id;
-      console.log(id);
+
       //find unique coin
       const coin = await this.apiService.findUniqueCoinId(id);
 
@@ -171,7 +191,9 @@ export default class ApiController {
         favorites = await this.apiService.clientWatchList(uuid);
       }
 
-      return res.status(200).json({ results: favorites?.map((c) => c.coin) });
+      return res
+        .status(200)
+        .json({ results: favorites?.map((c: any) => c.coin) });
     } catch (err) {
       console.log(err);
     }

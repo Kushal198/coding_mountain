@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateToken } from './jwt';
 
-export const authenticate =
+/** Middlewares to set User based on cookie */
+export const middleware =
   () => async (req: Request | any, res: Response, next: NextFunction) => {
     try {
-      let jwt = req.cookies.tokenSignature;
+      let jwt = req.cookies['tokensignature'];
 
       // verify request has token
       if (!jwt) {

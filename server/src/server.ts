@@ -11,11 +11,11 @@ const httpServer: http.Server = http.createServer(app);
 
 let io = setUpIo(httpServer);
 
+/** Notification namespace socket */
 const notificationNameSpace = io.of('/notification');
 
 notificationNameSpace.use(async (socket: any, next: any) => {
   try {
-    // const token: any = parse(socket.handshake.headers.cookie);
     if (typeof socket.handshake.headers.cookie === 'string') {
       let token = parse(socket.handshake.headers.cookie);
       let sockets;
@@ -46,35 +46,37 @@ notificationNameSpace.use(async (socket: any, next: any) => {
         }
       }
     }
-
-    next();
   } catch (err) {
     console.log(err);
   }
   next();
 });
 notificationNameSpace.on('connection', async function (socket: any) {
-  if (typeof socket.handshake.headers.cookie === 'string') {
-    const token: any = parse(socket.handshake.headers.cookie);
-    const decode: any = await validateToken(token.tokenSignature);
-    socket.on('disconnect', async function () {
-      // const find = await prisma.socket.findUnique({
-      //   where: {
-      //     socketId: socket.id,
-      //   },
-      // });
-      // if (!find) {
-      //   await prisma.socket.delete({
-      //     where: {
-      //       // socketId: socket.id,s
-      //       uuid: decode.uuid,
-      //     },
-      //   });
-      // }
+  try {
+    if (typeof socket.handshake.headers.cookie === 'string') {
+      const token: any = parse(socket.handshake.headers.cookie);
+      const decode: any = await validateToken(token.tokenSignature);
+      socket.on('disconnect', async function () {
+        // const find = await prisma.socket.findUnique({
+        //   where: {
+        //     socketId: socket.id,
+        //   },
+        // });
+        // if (!find) {
+        //   await prisma.socket.delete({
+        //     where: {
+        //       // socketId: socket.id,s
+        //       uuid: decode.uuid,
+        //     },
+        //   });
+        // }
 
-      console.log(socket.id + 'disconnected');
-      console.log('Client Disconnected');
-    });
+        console.log(socket.id + 'disconnected');
+        console.log('Client Disconnected');
+      });
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 

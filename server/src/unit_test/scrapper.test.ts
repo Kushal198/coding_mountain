@@ -1,6 +1,6 @@
-import ScrapData from './scrapper';
+import ScrapData from '../scrapper';
 
-describe('price feed functionality', () => {
+describe('Getting Price feed functionality', () => {
   it('return price feed array', async () => {
     const data = await new ScrapData().getPriceFeed();
     expect(data).toBeDefined();

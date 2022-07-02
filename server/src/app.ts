@@ -1,8 +1,9 @@
-import express, { Express, NextFunction, request } from 'express';
+import express, { Express } from 'express';
 import morgan from 'morgan';
 import routes from './api/routes/api';
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+import apiService from './api/services/api';
 
 const app: Express = express();
 
@@ -18,7 +19,11 @@ app.use(cookieParser());
 /** Takes care of JSON data */
 app.use(express.json());
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+  })
+);
 
 /** Middlewares */
 app.use((req, res, next) => {
@@ -38,7 +43,7 @@ app.use((req, res, next) => {
 });
 
 /** Routes */
-app.use('/api', routes);
+app.use('/api', routes(apiService));
 
 /** Error handling */
 app.use((req, res, next) => {

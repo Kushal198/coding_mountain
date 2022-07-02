@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest --coverage --verbose",
+    "test:watch": "jest",
     "start": "nodemon src/server.ts",
     "dev": "nodemon src/server.ts",
     "build": "npx tsc"

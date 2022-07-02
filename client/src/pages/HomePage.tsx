@@ -18,7 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 // import { SocketContext } from '../socketContext';
-import { io, Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:5050', {
   transports: ['websocket', 'pooling'],
@@ -126,7 +126,7 @@ const HomePage = () => {
     fetchFavorite();
   }, []);
 
-  /** Check for check in Watchlist data*/
+  /** Check for coin in Watchlist data*/
   useEffect(() => {
     if (fav) {
       setSelected(fav.map((item: any) => item.id));
@@ -411,13 +411,17 @@ const HomePage = () => {
           )}
         />
 
-        {/* {isFavLoading ? ( */}
-        {/* <CryptoTable columns={skeletonCols} data={Array(5).fill(dumbSkel)} /> */}
-        {/* ) : ( */}
-        <>{fav ? <CryptoTable columns={favCols} data={fav} /> : null}</>
-        {/* )} */}
+        {isFavLoading ? (
+          <CryptoTable columns={skeletonCols} data={Array(5).fill(dumbSkel)} />
+        ) : (
+          <>
+            {fav && fav.length ? (
+              <CryptoTable columns={favCols} data={fav} />
+            ) : null}
+          </>
+        )}
 
-        {/* {isLoading ? (
+        {isLoading ? (
           <CryptoTable
             columns={skeletonCols}
             data={Array(10).fill(dumbSkel)}
@@ -432,7 +436,7 @@ const HomePage = () => {
             searchKeyword={searchKeyword}
             pagination
           />
-        )} */}
+        )}
 
         {open && (
           <Modal

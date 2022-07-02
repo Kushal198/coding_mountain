@@ -5,12 +5,13 @@ export type Client = {
 
 export interface Coin {
   id: number;
-  name: String;
-  image: String;
-  code: String;
-  price: String;
-  marketCap: String;
-  h24: String;
+  name: string;
+  image: string;
+  code: string;
+  price: string;
+  marketCap: string;
+  h24: string;
+  rank: number;
 }
 
 export type WishList = {

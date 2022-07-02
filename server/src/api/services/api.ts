@@ -1,13 +1,13 @@
 import { Coin, Client } from '../types/type';
 import { PrismaClient } from '.prisma/client';
 
-export class ApiService {
+class ApiService {
   private database: PrismaClient;
   constructor() {
     this.database = new PrismaClient();
   }
 
-  createClient(uuid: string) {
+  createClient(uuid: string): Promise<any> | null {
     if (!uuid) {
       return null;
     }
@@ -22,7 +22,7 @@ export class ApiService {
     rank: number,
     code: string,
     marketCap: string
-  ) {
+  ): Promise<any> | null {
     return this.database.coin.create({
       data: {
         name,
@@ -42,7 +42,7 @@ export class ApiService {
     marketCap: string,
     h24: string,
     rank: number
-  ) {
+  ): Promise<any> | undefined {
     if (code) {
       return this.database.coin.update({
         where: {
@@ -58,7 +58,7 @@ export class ApiService {
     }
   }
 
-  findUniqueCoin(code: string) {
+  findUniqueCoin(code: string): Promise<any> | null {
     if (!code) {
       return null;
     }
@@ -69,7 +69,7 @@ export class ApiService {
     });
   }
 
-  findUniqueCoinId(id: number) {
+  findUniqueCoinId(id: number): Promise<any> | null {
     if (!id) {
       return null;
     }
@@ -80,7 +80,7 @@ export class ApiService {
     });
   }
 
-  deleteWishList(user: Client, coin: Coin) {
+  deleteWishList(user: Client, coin: Coin): Promise<any> {
     return this.database.wishlist.delete({
       where: {
         coinId_userId: {
@@ -90,7 +90,7 @@ export class ApiService {
       },
     });
   }
-  findUniqueClient(uuid: string) {
+  findUniqueClient(uuid: string): Promise<any> | null {
     if (!uuid) {
       return null;
     }
@@ -106,7 +106,7 @@ export class ApiService {
     maxVal: number,
     coin: Coin | null,
     user: Client | null
-  ) {
+  ): Promise<any> | null {
     return this.database.wishlist.create({
       data: {
         coin: {
@@ -125,11 +125,11 @@ export class ApiService {
     });
   }
 
-  clientWatchList(user: Client | null) {
+  clientWatchList(uuid: string): Promise<any> {
     return this.database.wishlist.findMany({
       where: {
         user: {
-          uuid: user?.uuid,
+          uuid: uuid,
         },
       },
       include: {
@@ -139,7 +139,18 @@ export class ApiService {
     });
   }
 
-  findAllCoins() {
+  uniqueCoinClientWatchList(userId: number, coinId: number): Promise<any> {
+    return this.database.wishlist.findUnique({
+      where: {
+        coinId_userId: {
+          coinId: coinId,
+          userId: userId,
+        },
+      },
+    });
+  }
+
+  findAllCoins(): Promise<any[]> {
     return this.database.coin.findMany({
       orderBy: {
         rank: 'asc',
@@ -147,3 +158,5 @@ export class ApiService {
     });
   }
 }
+
+export default new ApiService();
