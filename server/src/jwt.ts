@@ -15,7 +15,9 @@ export function generateToken(data: any) {
   const payload = data;
 
   // generate JWT
-  return sign({ uuid: payload }, 'secret1234', { expiresIn: 60 * 60 * 60 });
+  return sign({ uuid: payload }, 'secret1234', {
+    expiresIn: 3600 * 24 * 360, //1year
+  });
 }
 
 /**

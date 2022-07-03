@@ -8,7 +8,7 @@ import apiService from './api/services/api';
 const app: Express = express();
 
 /** Logging */
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
 /** Parse the request */
 app.use(express.urlencoded({ extended: false }));

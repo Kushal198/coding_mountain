@@ -12,52 +12,34 @@ datasource db {
 
 model Coin{
   id Int @id @default(autoincrement())
-
   name String
-
   code String @unique
-
   rank Int
-
   image String
-
   price String
-
   marketCap String
-
   h24 String
-
   clients Wishlist[]
 }
 
 model Client{
   id Int @id @default(autoincrement())
-
   uuid String @unique
-
   coins Wishlist[]
 }
 
 model Wishlist{
   id Int @id @default(autoincrement())
-
   coin Coin @relation(fields: [coinId], references: [id])
-
   coinId Int 
-
   user Client @relation(fields: [userId], references: [id])
-
   userId Int  
-
   minimumValue Int
-
   maximumValue Int
-
   @@unique([coinId,userId])
 }
 
 model Socket{
   socketId String @unique
-
   uuid String @unique
 }

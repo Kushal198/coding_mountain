@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { generateToken } from '../../jwt';
 import ScrapData from '../../scrapper';
 import { Coin, WishList, ScrappedData, Client } from '../types/type';
+import { createOrUpdateCoin } from '../utility/coinData';
 // import * as apiService from '../services/api';
 
 // type ApiService = typeof apiService;
@@ -35,7 +36,6 @@ export class ApiController {
       );
 
       const userExists = await this.apiService.findUniqueClient(uuid);
-
       //Create client if not exists and set cookie
       if (!userExists) {
         await this.apiService.createClient(uuid);
@@ -43,7 +43,7 @@ export class ApiController {
         const token = generateToken(uuid);
 
         res.cookie('tokensignature', `Bearer ${token}`, {
-          maxAge: 540 * 60 * 60 * 1000,
+          maxAge: 3600 * 24 * 60 * 60,
         });
       }
     }
@@ -51,40 +51,8 @@ export class ApiController {
       //Scrap latest data
       const latestData: ScrappedData[] = await new ScrapData().getPriceFeed();
 
-      if (latestData) {
-        for (let item of latestData) {
-          let name = item.allCoins.name;
-          let code = item.allCoins.code;
-          let image = item.allCoins.image;
-          let rank = item.allCoins.rank;
-          let price = item.price;
-          let marketCap = item.marketCap;
-          let h24 = item['24h'];
+      await createOrUpdateCoin(latestData);
 
-          if (code !== '') {
-            const findCoin = await this.apiService.findUniqueCoin(code);
-            if (findCoin) {
-              const up = await this.apiService.updateCoin(
-                code,
-                price,
-                h24,
-                marketCap,
-                rank
-              );
-            } else {
-              const cp = await this.apiService.createCoin(
-                name,
-                image,
-                h24,
-                price,
-                rank,
-                code,
-                marketCap
-              );
-            }
-          }
-        }
-      }
       const listPrice: Coin[] = await this.apiService.findAllCoins();
       return res.status(200).json({ result: listPrice });
     } catch (err) {

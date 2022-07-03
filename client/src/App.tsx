@@ -63,7 +63,8 @@ function App() {
       {notification.map((item: any) => {
         return (
           <MenuItem key={item.id} onClick={handleMenuClose}>
-            {item.coin.name} price has changed by {item.coin.h24}
+            {item.coin.name} price has changed by {item.coin.h24} and is{' '}
+            {item.coin.price}
           </MenuItem>
         );
       })}

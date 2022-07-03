@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateToken } from './jwt';
 
-/** Middlewares to set User based on cookie */
+/** Middlewares to set User based on */
 export const middleware =
   () => async (req: Request | any, res: Response, next: NextFunction) => {
     try {

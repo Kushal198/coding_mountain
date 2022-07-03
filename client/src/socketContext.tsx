@@ -8,7 +8,7 @@ const socket = io('http://localhost:5050/notification', {
 
 socket.on('connect', () => console.log('connected to socket'));
 
-socket.on('notification', (data) => console.log(data));
+// socket.on('notification', (data) => console.log(data));
 
 const SocketProvider = ({ children }: any) => {
   return (

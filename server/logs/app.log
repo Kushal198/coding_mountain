@@ -1,0 +1,80 @@
+info: Label🏷️: Jul-03-2022 12:19:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:19:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:19:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:19:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:21:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:21:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:21:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:21:01: [object Object]
+info: Label🏷️: Jul-03-2022 12:22:01: [{"id":2,"coinId":1,"userId":2,"minimumValue":700,"maximumValue":900,"user":{"id":2,"uuid":"21da8164-a962-4f3f-bf41-62f1dae88213"},"coin":{"id":1,"name":"Bitcoin","code":"BTC","rank":1,"image":"https://cdn.coinranking.com/bOabBYkcX/bitcoin_btc.svg?size=30x30","price":"$19,146.62","marketCap":"-0.53%","h24":"$365.39 billion"}}]
+info: Label🏷️: Jul-03-2022 12:22:01: [{"id":1,"coinId":2,"userId":4,"minimumValue":900,"maximumValue":800,"user":{"id":4,"uuid":"42367651-e3ea-4d19-bb01-1f9ddd44bc26"},"coin":{"id":2,"name":"Ethereum","code":"ETH","rank":2,"image":"https://cdn.coinranking.com/rk4RKHOuW/eth.svg?size=30x30","price":"$1,064.96","marketCap":"+1.71%","h24":"$128.89 billion"}}]
+info: Label🏷️: Jul-03-2022 12:22:01: [{"id":3,"coinId":1,"userId":6,"minimumValue":19087,"maximumValue":20000,"user":{"id":6,"uuid":"6dba4327-457b-40f5-a579-940797bed91f"},"coin":{"id":1,"name":"Bitcoin","code":"BTC","rank":1,"image":"https://cdn.coinranking.com/bOabBYkcX/bitcoin_btc.svg?size=30x30","price":"$19,146.62","marketCap":"-0.53%","h24":"$365.39 billion"}}]
+info: Label🏷️: Jul-03-2022 12:22:01: [{"id":4,"coinId":2,"userId":12,"minimumValue":1059,"maximumValue":2999,"user":{"id":12,"uuid":"48e3c6df-a167-45b8-a75a-8ce0a9a9c36e"},"coin":{"id":2,"name":"Ethereum","code":"ETH","rank":2,"image":"https://cdn.coinranking.com/rk4RKHOuW/eth.svg?size=30x30","price":"$1,064.96","marketCap":"+1.71%","h24":"$128.89 billion"}}]
+error: Label🏷️: Jul-03-2022 12:24:01: uncaughtException: 
+Invalid `this.database.coin.update()` invocation in
+/Users/kushal/Desktop/young_innovations/server/src/api/services/api.ts:47:33
+
+  44   rank: number
+  45 ): Promise<any> | undefined {
+  46   if (code) {
+→ 47     return this.database.coin.update(
+  Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.) })
+Error: 
+Invalid `this.database.coin.update()` invocation in
+/Users/kushal/Desktop/young_innovations/server/src/api/services/api.ts:47:33
+
+  44   rank: number
+  45 ): Promise<any> | undefined {
+  46   if (code) {
+→ 47     return this.database.coin.update(
+  Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.) })
+    at RequestHandler.request (/Users/kushal/Desktop/young_innovations/server/node_modules/@prisma/client/runtime/index.js:49026:15)
+    at async PrismaClient._request (/Users/kushal/Desktop/young_innovations/server/node_modules/@prisma/client/runtime/index.js:49919:18)
+error: Label🏷️: Jul-03-2022 12:32:01: uncaughtException: 
+Invalid `this.database.coin.update()` invocation in
+/Users/kushal/Desktop/young_innovations/server/src/api/services/api.ts:47:33
+
+  44   rank: number
+  45 ): Promise<any> | undefined {
+  46   if (code) {
+→ 47     return this.database.coin.update(
+  Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.) })
+Error: 
+Invalid `this.database.coin.update()` invocation in
+/Users/kushal/Desktop/young_innovations/server/src/api/services/api.ts:47:33
+
+  44   rank: number
+  45 ): Promise<any> | undefined {
+  46   if (code) {
+→ 47     return this.database.coin.update(
+  Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.) })
+    at RequestHandler.request (/Users/kushal/Desktop/young_innovations/server/node_modules/@prisma/client/runtime/index.js:49026:15)
+    at async PrismaClient._request (/Users/kushal/Desktop/young_innovations/server/node_modules/@prisma/client/runtime/index.js:49919:18)
+info: Label🏷️: Jul-03-2022 12:50:01: [{"id":1,"coinId":2,"userId":1,"minimumValue":1063,"maximumValue":2000,"user":{"id":1,"uuid":"1e67b772-ed7b-4b73-9755-f75012344bc3"},"coin":{"id":2,"name":"Ethereum","code":"ETH","rank":2,"image":"https://cdn.coinranking.com/rk4RKHOuW/eth.svg?size=30x30","price":"$1,065.17","marketCap":"$128.91 billion","h24":"+1.60%"}}]
+info: Label🏷️: Jul-03-2022 12:50:01: [{"id":2,"coinId":5,"userId":2,"minimumValue":218,"maximumValue":225,"user":{"id":2,"uuid":"2dbd7cee-eb5d-459d-ba92-e6ae68fdd239"},"coin":{"id":5,"name":"Binance Coin","code":"BNB","rank":5,"image":"https://cdn.coinranking.com/B1N19L_dZ/bnb.svg?size=30x30","price":"$219.51","marketCap":"$32.23 billion","h24":"+1.32%"}},{"id":3,"coinId":9,"userId":2,"minimumValue":31,"maximumValue":39,"user":{"id":2,"uuid":"2dbd7cee-eb5d-459d-ba92-e6ae68fdd239"},"coin":{"id":9,"name":"Solana","code":"SOL","rank":9,"image":"https://cdn.coinranking.com/yvUG4Qex5/solana.svg?size=30x30","price":"$32.92","marketCap":"$11.31 billion","h24":"+1.13%"}}]
+error: Label🏷️: Jul-03-2022 12:55:01: uncaughtException: 
+Invalid `this.database.coin.update()` invocation in
+/Users/kushal/Desktop/young_innovations/server/src/api/services/api.ts:47:33
+
+  44   rank: number
+  45 ): Promise<any> | undefined {
+  46   if (code) {
+→ 47     return this.database.coin.update(
+  Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.) })
+Error: 
+Invalid `this.database.coin.update()` invocation in
+/Users/kushal/Desktop/young_innovations/server/src/api/services/api.ts:47:33
+
+  44   rank: number
+  45 ): Promise<any> | undefined {
+  46   if (code) {
+→ 47     return this.database.coin.update(
+  Error occurred during query execution:
+ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.) })
+    at RequestHandler.request (/Users/kushal/Desktop/young_innovations/server/node_modules/@prisma/client/runtime/index.js:49026:15)
+    at async PrismaClient._request (/Users/kushal/Desktop/young_innovations/server/node_modules/@prisma/client/runtime/index.js:49919:18)

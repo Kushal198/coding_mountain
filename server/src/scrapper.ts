@@ -24,7 +24,7 @@ export default class ScrapData {
 
         let coinObj: any = {};
 
-        if (parentIdx) {
+        if (parentIdx <= 50) {
           $(parentElem)
             .children()
             .each((childrenIdx: number, childrenElem: HTMLElement) => {

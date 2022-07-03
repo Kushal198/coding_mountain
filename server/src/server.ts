@@ -20,7 +20,7 @@ notificationNameSpace.use(async (socket: any, next: any) => {
       let token = parse(socket.handshake.headers.cookie);
       let sockets;
       if (token) {
-        const decode: any = await validateToken(token.tokenSignature);
+        const decode: any = await validateToken(token.tokensignature);
         sockets = await prisma.socket.findUnique({
           where: {
             uuid: decode.uuid,
@@ -57,19 +57,19 @@ notificationNameSpace.on('connection', async function (socket: any) {
       const token: any = parse(socket.handshake.headers.cookie);
       const decode: any = await validateToken(token.tokenSignature);
       socket.on('disconnect', async function () {
-        // const find = await prisma.socket.findUnique({
-        //   where: {
-        //     socketId: socket.id,
-        //   },
-        // });
-        // if (!find) {
-        //   await prisma.socket.delete({
-        //     where: {
-        //       // socketId: socket.id,s
-        //       uuid: decode.uuid,
-        //     },
-        //   });
-        // }
+        const find = await prisma.socket.findUnique({
+          where: {
+            socketId: socket.id,
+          },
+        });
+        if (!find) {
+          await prisma.socket.delete({
+            where: {
+              socketId: socket.id,
+              // uuid: decode.uuid,
+            },
+          });
+        }
 
         console.log(socket.id + 'disconnected');
         console.log('Client Disconnected');
@@ -82,6 +82,7 @@ notificationNameSpace.on('connection', async function (socket: any) {
 
 io.on('connection', (socket: any) => {
   socket.on('connection', (arg: any) => {
+    console.log('hi');
     console.log(arg);
   });
 });

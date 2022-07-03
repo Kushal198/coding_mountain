@@ -17,7 +17,7 @@ import {
 import IconButton from '@mui/material/IconButton';
 import axios from 'axios';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-// import { SocketContext } from '../socketContext';
+import { SocketContext } from '../socketContext';
 import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:5050', {
@@ -48,7 +48,7 @@ export type Payload = {
 };
 
 const HomePage = () => {
-  // const socket = useContext(SocketContext);
+  const socketNotify = useContext(SocketContext);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [data, setData] = useState<Payload[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,6 +64,10 @@ const HomePage = () => {
   useEffect(() => {
     socket.on('priceChange', (arg: any) => {
       setData(arg.results);
+    });
+    socketNotify.on('favorites', (arg: any) => {
+      console.log(arg.data);
+      setFav(arg.data.map((item: any) => item.coin));
     });
   }, []);
 
