@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    ports: 
+      - '3000:3000'
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: coinrank
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: api_backend
+    ports:
+      - "5050:5050"
+    depends_on:
+      - postgres
+    restart: always
+    env_file: 
+      - ./server/.env
+
+volumes:
+  postgres: 
+    driver: local
