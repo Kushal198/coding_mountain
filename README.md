@@ -1,4 +1,4 @@
-# CodingMountain Crypto Scrapper Project with (NodeJS(TypeScript) + ReactJS(Typescript) + Web Sockets + Prisma + Docker Compose)
+# Crypto Scrapper Project with (NodeJS(TypeScript) + ReactJS(Typescript) + Web Sockets + Prisma + Docker Compose)
 
 A project that runs a Node server and a react app via two separate containers, using Docker Compose which scrapes data from crypto ranking website and 
 offer clients a feature to add their favorite coins to their wishlists and notify them if any price change based on what they have set.
