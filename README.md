@@ -8,7 +8,7 @@ offer clients a feature to add their favorite coins to their wishlists and notif
    docker-compose up
    ```
    
-The client server is spun up at ```localhost:3000``` and it proxies internally to the server using the linked name as ```server:5050```.
+The client server is spun up at ```localhost:3000``` and it proxies internally to the server using the linked name as ```api_server:5050```.
 
 The local directories are mounted into the containers, so changes will reflect immediately. However, changes to package.json will likely need to a rebuild: ```docker-compose down``` && ```docker-compose build``` && ```docker-compose up```.
 
