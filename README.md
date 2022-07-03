@@ -10,13 +10,14 @@ offer clients a feature to add their favorite coins to their wishlists and notif
    
 The client server is spun up at ```localhost:3000``` and it proxies internally to the server using the linked name as ```server:5050```.
 
-The local directories are mounted into the containers, so changes will reflect immediately. However, changes to package.json will likely need to a rebuild: docker-compose down && docker-compose build && docker-compose up.
+The local directories are mounted into the containers, so changes will reflect immediately. However, changes to package.json will likely need to a rebuild: ```docker-compose down``` && ```docker-compose build``` && ```docker-compose up```.
 
-## Notes For Schema Model Migration to Postgres database on docker container
 
-### To migrate model onto database
+## You Need to migrate your database schema on to postgres database inside docker container to run project successfully
 
-Navigate to your Docker and check your running api_backend container:
+### Notes To migrate model onto database
+
+Navigate to your Docker and check your running "api_backend container":
 
 This will launch an interactive CLI to run your API commands. In this case, you want to run the prisma migrate command. This will allow your database to sync with the schema you have created.
 
